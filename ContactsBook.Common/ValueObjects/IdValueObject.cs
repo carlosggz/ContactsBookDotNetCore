@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContactsBook.Common.Entities
+namespace ContactsBook.Common.ValueObjects
 {
-    public interface IEntity
+    class IdValueObject
     {
     }
 }

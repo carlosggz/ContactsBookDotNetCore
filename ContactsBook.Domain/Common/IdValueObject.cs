@@ -4,11 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContactsBook.Domain.ValueObjects
+namespace ContactsBook.Domain.Common
 {
-    public class IdValueObject : IValueObject
+    public class IdValueObject : ValueObject
     {
         public string Value { get; private set; }
+
+        public IdValueObject()
+            : this(Guid.NewGuid().ToString())
+        { }
 
         public IdValueObject(string value)
         {
@@ -18,6 +22,11 @@ namespace ContactsBook.Domain.ValueObjects
             Value = uid.ToString();
         }
 
-        public static IdValueObject Generate() => new IdValueObject(Guid.NewGuid().ToString());
+        public override string ToString() => Value;
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
+        }
     }
 }

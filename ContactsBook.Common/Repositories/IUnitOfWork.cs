@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContactsBook.Common
+namespace ContactsBook.Common.Repositories
 {
     public interface IUnitOfWork
     {

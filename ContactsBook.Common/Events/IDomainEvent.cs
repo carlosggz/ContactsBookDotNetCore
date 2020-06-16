@@ -6,8 +6,9 @@ namespace ContactsBook.Common.Events
 {
     public interface IDomainEvent
     {
+        string EventId { get; }
         string AggregateRootId { get; }
-        Object EventDetails { get; }
+        DateTime OccurrenceDate { get; }
     }
 
 }

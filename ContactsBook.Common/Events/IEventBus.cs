@@ -2,7 +2,7 @@
 
 namespace ContactsBook.Common.Events
 {
-    public interface IDomainBus
+    public interface IEventBus
     {
         void Publish(IEnumerable<IDomainEvent> domainEvents);
     }

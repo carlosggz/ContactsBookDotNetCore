@@ -6,6 +6,7 @@ namespace ContactsBook.Common.Repositories
 {
     public interface IUnitOfWork
     {
+        void StartChanges();
         void CommitChanges();
         void RollbackChanges();
     }

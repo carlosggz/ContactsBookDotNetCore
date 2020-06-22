@@ -1,4 +1,5 @@
 ﻿using ContactsBook.Common.Exceptions;
+using ContactsBook.Common.Utils;
 using ContactsBook.Common.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ContactsBook.Domain.Contacts
         public string PhoneNumber { get; private set; }
         public PhoneValueObject(PhoneType phoneType, string phoneNumber)
         {
-            if (string.IsNullOrWhiteSpace(phoneNumber) || !Regex.Match(phoneNumber, @"^(\+[0-9]{9})$").Success)
+            if (!ValidationHelper.IsValidPhoneNumber(phoneNumber))
                 throw new DomainException("Invalid phone number");
 
             PhoneType = phoneType;

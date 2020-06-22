@@ -1,4 +1,5 @@
 ﻿using ContactsBook.Common.Exceptions;
+using ContactsBook.Common.Utils;
 using ContactsBook.Common.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,10 @@ namespace ContactsBook.Domain.Common
 
         public IdValueObject(string value)
         {
-            if (!Guid.TryParse(value, out Guid uid))
+            if (!ValidationHelper.IsValidId(value))
                 throw new DomainException("Invalid Id");
 
-            Value = uid.ToString();
+            Value = value;
         }
 
         public override string ToString() => Value;

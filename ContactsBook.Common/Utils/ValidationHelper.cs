@@ -8,7 +8,7 @@ namespace ContactsBook.Common.Utils
     public static class ValidationHelper
     {
         private const string EmailRegularExpression = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
-        private const string PhoneNumberExpression = @"^(\+[0-9]{9})$";
+        private const string PhoneNumberExpression = @"\(?\d{3}\)?-? *\d{3}-? *-?\d{4}";
 
         private static bool Matches(string value, string pattern)
             => !string.IsNullOrWhiteSpace(value) && Regex.Match(value, pattern).Success;

@@ -3,15 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Api", "ContactsBook.Api\ContactsBook.Api.csproj", "{01B33027-98DD-4F21-86C0-B2A3CA82BFC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Api", "ContactsBook.Api\ContactsBook.Api.csproj", "{01B33027-98DD-4F21-86C0-B2A3CA82BFC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Domain", "ContactsBook.Domain\ContactsBook.Domain.csproj", "{98BE1E6F-EC8C-4DBA-8C89-79D36D322D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Domain", "ContactsBook.Domain\ContactsBook.Domain.csproj", "{98BE1E6F-EC8C-4DBA-8C89-79D36D322D9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Application", "ContactsBook.Application\ContactsBook.Application.csproj", "{51F465F5-26A1-41BC-A143-B9CC73B5494F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Application", "ContactsBook.Application\ContactsBook.Application.csproj", "{51F465F5-26A1-41BC-A143-B9CC73B5494F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Infrastructure", "ContactsBook.Infrastructure\ContactsBook.Infrastructure.csproj", "{CACE5F73-3E48-4E4D-99AF-6787E6135359}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Infrastructure", "ContactsBook.Infrastructure\ContactsBook.Infrastructure.csproj", "{CACE5F73-3E48-4E4D-99AF-6787E6135359}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Common", "ContactsBook.Common\ContactsBook.Common.csproj", "{E1486FF2-9753-41D2-9311-C30AD05138E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Common", "ContactsBook.Common\ContactsBook.Common.csproj", "{E1486FF2-9753-41D2-9311-C30AD05138E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ContactsBookBoundedContext", "ContactsBookBoundedContext", "{2AD555DF-ABFA-447B-AED9-0C77809485C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3A4AFA7A-F3E9-4B40-B0B4-B22144C8B1F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{D3481D89-F23B-4CF6-B778-116AD8A0AE89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Tests", "ContactsBook.Tests\ContactsBook.Tests.csproj", "{180CD08A-5BA9-42DD-BCF2-46CE5AACB969}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +47,21 @@ Global
 		{E1486FF2-9753-41D2-9311-C30AD05138E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1486FF2-9753-41D2-9311-C30AD05138E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1486FF2-9753-41D2-9311-C30AD05138E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{180CD08A-5BA9-42DD-BCF2-46CE5AACB969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{180CD08A-5BA9-42DD-BCF2-46CE5AACB969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{180CD08A-5BA9-42DD-BCF2-46CE5AACB969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{180CD08A-5BA9-42DD-BCF2-46CE5AACB969}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{01B33027-98DD-4F21-86C0-B2A3CA82BFC6} = {D3481D89-F23B-4CF6-B778-116AD8A0AE89}
+		{98BE1E6F-EC8C-4DBA-8C89-79D36D322D9D} = {2AD555DF-ABFA-447B-AED9-0C77809485C8}
+		{51F465F5-26A1-41BC-A143-B9CC73B5494F} = {2AD555DF-ABFA-447B-AED9-0C77809485C8}
+		{CACE5F73-3E48-4E4D-99AF-6787E6135359} = {2AD555DF-ABFA-447B-AED9-0C77809485C8}
+		{E1486FF2-9753-41D2-9311-C30AD05138E6} = {2AD555DF-ABFA-447B-AED9-0C77809485C8}
+		{180CD08A-5BA9-42DD-BCF2-46CE5AACB969} = {3A4AFA7A-F3E9-4B40-B0B4-B22144C8B1F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ABA03CC6-29EA-4F1E-8BF8-92AB6CFF2E00}

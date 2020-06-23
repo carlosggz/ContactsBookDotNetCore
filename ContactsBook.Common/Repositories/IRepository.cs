@@ -13,6 +13,7 @@ namespace ContactsBook.Common.Repositories
         where TSearchResultsDto: IDto
     {
         void Add(TEntity entity);
+        void Update(TEntity entity);
         void Remove(TEntity entity);
         TEntity GetById(TId id);
         ISearchsResults<TSearchResultsDto> SearchByCriteria(TCriteria criteria);

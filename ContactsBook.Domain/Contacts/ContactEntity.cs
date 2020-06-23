@@ -10,14 +10,13 @@ using System.Text;
 
 namespace ContactsBook.Domain.Contacts
 {
-    public class Contact : BaseAggregateRoot
+    public class ContactEntity : BaseAggregateRoot
     {
-        public IdValueObject Id { get; set; }
-        public ContactNameValueObject Name { get; private set; }
+        private ContactNameValueObject _name;
         private readonly List<EmailValueObject> _emailAddresses;
-        public readonly List<PhoneValueObject> _phoneNumbers;
+        private readonly List<PhoneValueObject> _phoneNumbers;
 
-        public Contact(IdValueObject id, ContactNameValueObject name)
+        public ContactEntity(IdValueObject id, ContactNameValueObject name)
         {
             if (id == null || name == null)
                 throw new DomainException("Invalid paramaters");
@@ -26,6 +25,13 @@ namespace ContactsBook.Domain.Contacts
             Name = name;
             _emailAddresses = new List<EmailValueObject>();
             _phoneNumbers = new List<PhoneValueObject>();
+        }
+
+        public IdValueObject Id { get; private set; }
+        public ContactNameValueObject Name
+        {
+            get => _name;
+            set => _name = value ?? throw new DomainException("Invalid Name");
         }
 
         #region Email Address management

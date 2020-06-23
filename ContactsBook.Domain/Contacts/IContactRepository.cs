@@ -6,7 +6,8 @@ using System.Text;
 
 namespace ContactsBook.Domain.Contacts
 {
-    public interface IContactRepository: IRepository<Contact, IdValueObject, ContactSearchCriteria, ContactDto>
+    public interface IContactRepository: IRepository<ContactEntity, IdValueObject, ContactSearchCriteria, ContactDto>
     {
+        bool ExistsContactWithName(ContactNameValueObject name, IdValueObject ignoredId = null);
     }
 }

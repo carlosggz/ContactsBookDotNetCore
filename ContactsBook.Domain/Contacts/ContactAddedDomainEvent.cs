@@ -10,7 +10,7 @@ namespace ContactsBook.Domain.Contacts
         public string LastName { get; private set; }
         public override string EventName => "Contact Added";
 
-        public ContactAddedDomainEvent(Contact contact)
+        public ContactAddedDomainEvent(ContactEntity contact)
             : base(contact?.Id.ToString())
         {
             if (contact == null)

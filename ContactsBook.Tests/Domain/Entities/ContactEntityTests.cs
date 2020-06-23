@@ -1,4 +1,5 @@
-﻿using ContactsBook.Tests.Domain.ValueObjects;
+﻿using ContactsBook.Common.Exceptions;
+using ContactsBook.Tests.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 namespace ContactsBook.Tests.Domain.Entities
 {
     [TestFixture]
-    public class ContactTests
+    public class ContactEntityTests
     {
         [Test]
         public void CreateNewContactContainsNoDependencies()
@@ -79,5 +80,9 @@ namespace ContactsBook.Tests.Domain.Entities
             Assert.AreEqual(1, contact.PhoneNumbers.Count);
             Assert.IsTrue(contact.PhoneNumbers.Contains(phone2));
         }
+
+        [Test]
+        public void ContactSetInvalidNameThrowsException()
+            => Assert.Throws<DomainException>(() => ObjectMotherContact.Random().Name = null);
     }
 }

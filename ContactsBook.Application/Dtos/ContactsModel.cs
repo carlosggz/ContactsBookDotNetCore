@@ -10,6 +10,10 @@ namespace ContactsBook.Application.Dtos
 {
     public class ContactsModel: BaseModel
     {
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Id is required")]
+        [MaxLength(36, ErrorMessage = "Id cannot have more than 36 characters")]
+        public string Id { get; set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "First name is required")]
         [MaxLength(100, ErrorMessage = "First name cannot have more than 100 characters")]
         public string FirstName { get; set; }

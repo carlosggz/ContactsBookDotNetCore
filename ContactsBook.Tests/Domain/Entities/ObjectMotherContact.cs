@@ -5,7 +5,7 @@ namespace ContactsBook.Tests.Domain.Entities
 {
     public static class ObjectMotherContact
     {
-        public static Contact Random()
-            => new Contact(new IdValueObject(), new ContactNameValueObject(Faker.Name.First(), Faker.Name.Last()));
+        public static ContactEntity Random()
+            => new ContactEntity(new IdValueObject(), new ContactNameValueObject(Faker.Name.First(), Faker.Name.Last()));
     }
 }

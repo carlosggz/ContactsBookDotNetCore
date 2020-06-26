@@ -10,7 +10,7 @@ using System.Text;
 
 namespace ContactsBook.Domain.Contacts
 {
-    public class ContactEntity : BaseAggregateRoot
+    public class ContactEntity : IAggregateRoot
     {
         private ContactNameValueObject _name;
         private readonly List<EmailValueObject> _emailAddresses;
@@ -35,6 +35,17 @@ namespace ContactsBook.Domain.Contacts
         }
 
         #region Email Address management
+
+        public void AddEmailAddresses(IEnumerable<string> emailAddresses)
+        {
+            if (emailAddresses == null || !emailAddresses.Any())
+                return;
+
+            foreach (var email in emailAddresses)
+                if (!string.IsNullOrWhiteSpace(email))
+                    AddEmailAddress(new EmailValueObject(email));   
+        }
+
         public void AddEmailAddress(EmailValueObject email)
         {
             if (email == null || _emailAddresses.Any(x => x == email))
@@ -43,6 +54,10 @@ namespace ContactsBook.Domain.Contacts
             _emailAddresses.Add(email);
         }
 
+        public void RemoveAllEmailAddress()
+        {
+            _emailAddresses.Clear();
+        }
         public void RemoveEmailAddress(EmailValueObject email)
         {
             if (email == null || !_emailAddresses.Any(x => x == email))
@@ -56,12 +71,26 @@ namespace ContactsBook.Domain.Contacts
         #endregion
 
         #region Phone numbers management
+
+        public void AddPhoneNumbers(IEnumerable<Tuple<PhoneType, string>> phoneNumbers)
+        {
+            if (phoneNumbers == null || !phoneNumbers.Any())
+                return;
+
+            foreach (var phoneNumber in phoneNumbers)
+                if (phoneNumber != null)
+                    AddPhoneNumber(new PhoneValueObject(phoneNumber.Item1, phoneNumber.Item2));
+        }
         public void AddPhoneNumber(PhoneValueObject phone)
         {
             if (phone == null || _phoneNumbers.Any(x => x == phone))
                 return;
 
             _phoneNumbers.Add(phone);
+        }
+        public void RemoveAllPhoneNumbers()
+        {
+            _phoneNumbers.Clear();
         }
 
         public void RemovePhoneNumber(PhoneValueObject phone)

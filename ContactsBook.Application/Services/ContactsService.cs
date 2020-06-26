@@ -35,8 +35,10 @@ namespace ContactsBook.Application.Services
                 throw new DomainException("There is already a contact with that name");
 
             var contact = new ContactEntity(new IdValueObject(model.Id), name);
+            contact.AddEmailAddresses(model.EmailAddresses);
+            contact.AddPhoneNumbers(model.PhoneNumbers.Select(x => new Tuple<PhoneType, string>(x.PhoneType, x.PhoneNumber)));
 
-            CopyAggregates(model, contact);
+            EventBus.Record(new ContactAddedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
             UoWExecute(() => _contactsRepository.Add(contact));
         }
@@ -54,14 +56,12 @@ namespace ContactsBook.Application.Services
 
             var contact = GetContact(id);
             contact.Name = name;
+            contact.RemoveAllEmailAddress();
+            contact.RemoveAllPhoneNumbers();
+            contact.AddEmailAddresses(model.EmailAddresses);
+            contact.AddPhoneNumbers(model.PhoneNumbers.Select(x => new Tuple<PhoneType, string>(x.PhoneType, x.PhoneNumber)));
 
-            while (contact.EmailAddresses.Any())
-                contact.RemoveEmailAddress(contact.EmailAddresses.First());
-
-            while (contact.PhoneNumbers.Any())
-                contact.RemovePhoneNumber(contact.PhoneNumbers.First());
-
-            CopyAggregates(model, contact);
+            EventBus.Record(new ContactUpdatedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
             UoWExecute(() => _contactsRepository.Update(contact));
         }
@@ -70,6 +70,8 @@ namespace ContactsBook.Application.Services
         public void DeleteContact(IdValueObject id)
         {
             var contact = GetContact(id);
+
+            EventBus.Record(new ContactDeletedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
             UoWExecute(() => _contactsRepository.Remove(contact));
         }
@@ -81,21 +83,6 @@ namespace ContactsBook.Application.Services
                 throw new InvalidEntityException("Invalid id");
 
             return _contactsRepository.GetById(id) ?? throw new InvalidEntityException("Contact not found");
-        }
-
-        private void CopyAggregates(ContactsModel model, ContactEntity contact)
-        {
-            if (model.EmailAddresses != null)
-            {
-                foreach (var email in model.EmailAddresses)
-                    contact.AddEmailAddress(new EmailValueObject(email));
-            }
-
-            if (model.PhoneNumbers != null)
-            {
-                foreach (var phone in model.PhoneNumbers)
-                    contact.AddPhoneNumber(new PhoneValueObject(phone.PhoneType, phone.PhoneNumber));
-            }
         }
 
         #endregion

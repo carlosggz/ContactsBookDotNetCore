@@ -11,14 +11,14 @@ namespace ContactsBook.Application.Services
 {
     public class BaseService
     {
-        public BaseService(IUnitOfWork unitOfWork, IEventBus domainBus)
+        public BaseService(IUnitOfWork unitOfWork, IEventBus eventBus)
         {
             UnitOfWork = unitOfWork;
-            DomainBus = domainBus;
+            EventBus = eventBus;
         }
 
         protected IUnitOfWork UnitOfWork { get; private set; }
-        protected IEventBus DomainBus { get; private set; }
+        protected IEventBus EventBus { get; private set; }
 
 
         protected void ValidateEntity(IModel model)
@@ -47,6 +47,8 @@ namespace ContactsBook.Application.Services
                 UnitOfWork.RollbackChanges();
                 throw;
             }
+
+            EventBus.PublishAsync();
         }
     }
 }

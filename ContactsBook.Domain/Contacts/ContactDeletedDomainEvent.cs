@@ -4,13 +4,13 @@ using ContactsBook.Common.Exceptions;
 
 namespace ContactsBook.Domain.Contacts
 {
-    public class ContactAddedDomainEvent : DomainEvent
+    public class ContactDeletedDomainEvent : DomainEvent
     {
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        public override string EventName => "Contact Added";
+        public override string EventName => "Contact Deleted";
 
-        public ContactAddedDomainEvent(string id, string firstName, string lastName)
+        public ContactDeletedDomainEvent(string id, string firstName, string lastName)
             : base(id)
         {
             if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))

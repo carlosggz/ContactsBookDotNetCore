@@ -7,6 +7,5 @@ namespace ContactsBook.Common.Entities
 {
     public interface IAggregateRoot: IEntity
     {
-        IEnumerable<IDomainEvent> PullEvents();
     }
 }

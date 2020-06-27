@@ -19,7 +19,7 @@ namespace ContactsBook.Tests.Application.ContactService
             var contact = ContactEntityObjectMother.Random();
 
             _repo.Setup(x => x.GetById(contact.Id)).Returns(contact);
-            _repo.Setup(x => x.Delete(It.IsAny<ContactEntity>()));
+            _repo.Setup(x => x.Delete(It.Is<IdValueObject>(p => p == contact.Id)));
 
             _uof.Setup(x => x.StartChanges());
             _uof.Setup(x => x.CommitChanges());

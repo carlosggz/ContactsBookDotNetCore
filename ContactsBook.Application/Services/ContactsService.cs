@@ -16,9 +16,9 @@ namespace ContactsBook.Application.Services
 {
     public class ContactsService: BaseService
     {
-        private readonly IContactRepository _contactsRepository;
+        private readonly IContactsRepository _contactsRepository;
 
-        public ContactsService(IUnitOfWork unitOfWork, IEventBus domainBus, IContactRepository contactsRepository) 
+        public ContactsService(IUnitOfWork unitOfWork, IEventBus domainBus, IContactsRepository contactsRepository) 
             : base(unitOfWork, domainBus)
         {
             _contactsRepository = contactsRepository;
@@ -76,7 +76,16 @@ namespace ContactsBook.Application.Services
 
             EventBus.Record(new ContactDeletedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
-            UoWExecute(() => _contactsRepository.Delete(contact));
+            UoWExecute(() => _contactsRepository.Delete(contact.Id));
+        }
+
+        //Search use case
+        public SearchsResults<ContactDto> GetContactsByName(int page, int size, string text)
+        {
+            if (page < 1 || size < 1)
+                throw new InvalidParametersException("Invalid search parameters");
+
+            return _contactsRepository.SearchByCriteria(new ContactSearchCriteria(page, size, text));
         }
 
         #region Helpers

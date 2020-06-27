@@ -14,7 +14,7 @@ namespace ContactsBook.Common.Repositories
         public BaseSearchCriteria(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
-                throw new DomainException("Invalid search parameters");
+                throw new InvalidParametersException("Invalid search parameters");
 
             PageNumber = pageNumber;
             PageSize = pageSize;

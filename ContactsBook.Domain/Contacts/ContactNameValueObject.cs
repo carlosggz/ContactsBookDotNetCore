@@ -16,6 +16,9 @@ namespace ContactsBook.Domain.Contacts
             if (string.IsNullOrEmpty(firstName) || string.IsNullOrWhiteSpace(lastName))
                 throw new DomainException("Invalid first name or last name");
 
+            if (firstName.Length > 100 || lastName.Length > 100)
+                throw new DomainException("First name or last name cannot exceed 100 characters");
+
             FirstName = firstName;
             LastName = lastName;
         }

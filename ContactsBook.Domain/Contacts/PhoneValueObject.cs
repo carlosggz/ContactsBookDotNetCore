@@ -17,6 +17,9 @@ namespace ContactsBook.Domain.Contacts
             if (!ValidationHelper.IsValidPhoneNumber(phoneNumber))
                 throw new DomainException("Invalid phone number");
 
+            if (phoneNumber.Length > 20)
+                throw new DomainException("Phone number cannot exceed 20 characters");
+
             PhoneType = phoneType;
             PhoneNumber = phoneNumber;
         }

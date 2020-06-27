@@ -18,6 +18,9 @@ namespace ContactsBook.Domain.Contacts
             if (!ValidationHelper.IsValidEmail(emailAddress))
                 throw new DomainException("Invalid email address");
 
+            if (emailAddress.Length > 200)
+                throw new DomainException("Email cannot exceed 100 characters");
+
             Value = emailAddress;
         }
 

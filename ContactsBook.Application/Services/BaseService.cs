@@ -1,6 +1,7 @@
 ﻿using ContactsBook.Application.Dtos;
 using ContactsBook.Application.Exceptions;
 using ContactsBook.Common.Events;
+using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Repositories;
 using System;
 using System.Collections.Generic;

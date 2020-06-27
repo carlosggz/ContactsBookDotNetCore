@@ -14,8 +14,8 @@ namespace ContactsBook.Common.Repositories
     {
         void Add(TEntity entity);
         void Update(TEntity entity);
-        void Delete(TEntity entity);
+        void Delete(TId id);
         TEntity GetById(TId id);
-        ISearchsResults<TSearchResultsDto> SearchByCriteria(TCriteria criteria);
+        SearchsResults<TSearchResultsDto> SearchByCriteria(TCriteria criteria);
     }
 }

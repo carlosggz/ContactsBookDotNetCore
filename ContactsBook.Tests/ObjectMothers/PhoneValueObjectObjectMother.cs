@@ -26,12 +26,15 @@ namespace ContactsBook.Tests.ObjectMothers
         };
 
         public static PhoneType GetRandomPhoneType()
-            => (PhoneType)new Random().Next((int)PhoneType.Home, (int)PhoneType.Mobile);
+            => (PhoneType)GetRandom().Next((int)PhoneType.Home, (int)PhoneType.Mobile);
 
         public static string GetRandomPhoneNumber()
-            => PhoneNumbers[new Random().Next(0, PhoneNumbers.Length - 1)];
+            => PhoneNumbers[GetRandom().Next(0, PhoneNumbers.Length - 1)];
 
         public static PhoneValueObject Random()
             => new PhoneValueObject(GetRandomPhoneType(), GetRandomPhoneNumber());
+
+        private static Random GetRandom()
+            => new Random(Guid.NewGuid().GetHashCode());
     }
 }

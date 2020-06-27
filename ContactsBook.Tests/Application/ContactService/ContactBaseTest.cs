@@ -12,7 +12,7 @@ namespace ContactsBook.Tests.Application.ContactService
 {
     public abstract class ContactBaseTest
     {
-        protected Mock<IContactRepository> _repo;
+        protected Mock<IContactsRepository> _repo;
         protected Mock<IUnitOfWork> _uof;
         protected Mock<IEventBus> _eventBus;
         protected ContactsService _contactsService;
@@ -20,7 +20,7 @@ namespace ContactsBook.Tests.Application.ContactService
         [SetUp]
         public void Init()
         {
-            _repo = new Mock<IContactRepository>();
+            _repo = new Mock<IContactsRepository>();
             _uof = new Mock<IUnitOfWork>();
             _eventBus = new Mock<IEventBus>();
             _contactsService = new ContactsService(_uof.Object, _eventBus.Object, _repo.Object);

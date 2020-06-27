@@ -7,16 +7,16 @@ namespace ContactsBook.Domain.Contacts
 {
     public class ContactSearchCriteria : BaseSearchCriteria
     {
-        private readonly string _containingText;
+        public readonly string Text;
 
         public ContactSearchCriteria(
             int pageNumber, 
             int pageSize, 
-            string containingText = null
+            string text = null
             )
             :base(pageNumber, pageSize)
         {
-            _containingText = containingText;
+            Text = text;
         }
     }
 }

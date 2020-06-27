@@ -1,5 +1,6 @@
 ﻿using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Contacts;
+using ContactsBook.Tests.ObjectMothers;
 using Faker;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace ContactsBook.Tests.Domain.ValueObjects
         [Test]
         public void ValidPhoneValueGeneratesValidObject()
         {
-            foreach (var phoneNumber in ObjectMotherPhoneValueObject.PhoneNumbers)
+            foreach (var phoneNumber in PhoneValueObjectObjectMother.PhoneNumbers)
             {
-                var phoneType = ObjectMotherPhoneValueObject.GetRandomPhoneType();
+                var phoneType = PhoneValueObjectObjectMother.GetRandomPhoneType();
                 var vo = new PhoneValueObject(phoneType, phoneNumber);
 
                 Assert.NotNull(vo);
@@ -27,7 +28,7 @@ namespace ContactsBook.Tests.Domain.ValueObjects
         [Test]
         public void ObjectsWithSameValuesAreEquals()
         {
-            var random = ObjectMotherPhoneValueObject.Random();
+            var random = PhoneValueObjectObjectMother.Random();
 
             var vo1 = new PhoneValueObject(random.PhoneType, random.PhoneNumber);
             var vo2 = new PhoneValueObject(random.PhoneType, random.PhoneNumber);
@@ -39,14 +40,14 @@ namespace ContactsBook.Tests.Domain.ValueObjects
 
         [Test]
         public void NullValueThrowsException()
-            => Assert.Throws<DomainException>(() => new PhoneValueObject(ObjectMotherPhoneValueObject.GetRandomPhoneType(), null));
+            => Assert.Throws<DomainException>(() => new PhoneValueObject(PhoneValueObjectObjectMother.GetRandomPhoneType(), null));
 
         [Test]
         public void EmptyValueThrowsException()
-            => Assert.Throws<DomainException>(() => new PhoneValueObject(ObjectMotherPhoneValueObject.GetRandomPhoneType(), string.Empty));
+            => Assert.Throws<DomainException>(() => new PhoneValueObject(PhoneValueObjectObjectMother.GetRandomPhoneType(), string.Empty));
 
         [Test]
         public void InvalidPhoneNumberThrowsException()
-            => Assert.Throws<DomainException>(() => new PhoneValueObject(ObjectMotherPhoneValueObject.GetRandomPhoneType(), "abc"));
+            => Assert.Throws<DomainException>(() => new PhoneValueObject(PhoneValueObjectObjectMother.GetRandomPhoneType(), "abc"));
     }
 }

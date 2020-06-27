@@ -67,13 +67,16 @@ namespace ContactsBook.Application.Services
         }
 
         //Delete use case
-        public void DeleteContact(IdValueObject id)
+        public void DeleteContact(string id)
         {
-            var contact = GetContact(id);
+            if (string.IsNullOrWhiteSpace(id))
+                throw new InvalidEntityException("Invalid id");
+
+            var contact = GetContact(new IdValueObject(id));
 
             EventBus.Record(new ContactDeletedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
-            UoWExecute(() => _contactsRepository.Remove(contact));
+            UoWExecute(() => _contactsRepository.Delete(contact));
         }
 
         #region Helpers

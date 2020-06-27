@@ -1,9 +1,9 @@
 ﻿using ContactsBook.Domain.Contacts;
 using System;
 
-namespace ContactsBook.Tests.Domain.ValueObjects
+namespace ContactsBook.Tests.ObjectMothers
 {
-    public static class ObjectMotherPhoneValueObject
+    public static class PhoneValueObjectObjectMother
     {
         public static readonly string[] PhoneNumbers =
         {
@@ -26,7 +26,7 @@ namespace ContactsBook.Tests.Domain.ValueObjects
         };
 
         public static PhoneType GetRandomPhoneType()
-            => (PhoneType)(new Random().Next((int)PhoneType.Home, (int)PhoneType.Mobile));
+            => (PhoneType)new Random().Next((int)PhoneType.Home, (int)PhoneType.Mobile);
 
         public static string GetRandomPhoneNumber()
             => PhoneNumbers[new Random().Next(0, PhoneNumbers.Length - 1)];

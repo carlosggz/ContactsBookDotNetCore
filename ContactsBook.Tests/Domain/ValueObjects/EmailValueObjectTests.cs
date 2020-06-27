@@ -1,5 +1,6 @@
 ﻿using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Contacts;
+using ContactsBook.Tests.ObjectMothers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ContactsBook.Tests.Domain.ValueObjects
         [Test]
         public void ValidEmailGeneratesValidObject()
         {
-            var random = ObjectMotherEmailValueObject.Random();
+            var random = EmailValueObjectObjectMother.Random();
 
             var vo = new EmailValueObject(random.Value);
 
@@ -24,7 +25,7 @@ namespace ContactsBook.Tests.Domain.ValueObjects
         [Test]
         public void ObjectsWithSameValueAreEquals()
         {
-            var random = ObjectMotherEmailValueObject.Random();
+            var random = EmailValueObjectObjectMother.Random();
 
             var vo1 = new EmailValueObject(random.Value);
             var vo2 = new EmailValueObject(random.Value);

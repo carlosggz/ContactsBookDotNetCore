@@ -1,6 +1,6 @@
 ﻿using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Contacts;
-using ContactsBook.Tests.Domain.ValueObjects;
+using ContactsBook.Tests.ObjectMothers;
 using Faker;
 using NUnit.Framework;
 using System;
@@ -16,7 +16,7 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void CreateNewContactContainsNoDependencies()
         {
-            var contact = ObjectMotherContact.Random();
+            var contact = ContactEntityObjectMother.Random();
 
             Assert.NotNull(contact);
             Assert.AreEqual(0, contact.EmailAddresses.Count);
@@ -26,9 +26,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactAddEmailAddressesAddsMailAddresses()
         {
-            var contact = ObjectMotherContact.Random();
-            var email1 = ObjectMotherEmailValueObject.Random();
-            var email2 = ObjectMotherEmailValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var email1 = EmailValueObjectObjectMother.Random();
+            var email2 = EmailValueObjectObjectMother.Random();
 
             contact.AddEmailAddress(email1);
             contact.AddEmailAddress(email2);
@@ -41,8 +41,8 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactAddEmailAddressesAddNonExistingOrNull()
         {
-            var contact = ObjectMotherContact.Random();
-            var email1 = ObjectMotherEmailValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var email1 = EmailValueObjectObjectMother.Random();
             
             contact.AddEmailAddress(email1);
             contact.AddEmailAddress(null);
@@ -55,9 +55,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactRemoveEmailAddressesDoesNotThrowError()
         {
-            var contact = ObjectMotherContact.Random();
-            var email1 = ObjectMotherEmailValueObject.Random();
-            var email2 = ObjectMotherEmailValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var email1 = EmailValueObjectObjectMother.Random();
+            var email2 = EmailValueObjectObjectMother.Random();
             contact.AddEmailAddress(email1);
 
             contact.RemoveEmailAddress(email2);
@@ -69,9 +69,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactRemoveEmailAddressesRemovesMailAddresses()
         {
-            var contact = ObjectMotherContact.Random();
-            var email1 = ObjectMotherEmailValueObject.Random();
-            var email2 = ObjectMotherEmailValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var email1 = EmailValueObjectObjectMother.Random();
+            var email2 = EmailValueObjectObjectMother.Random();
             contact.AddEmailAddress(email1);
             contact.AddEmailAddress(email2);
 
@@ -84,9 +84,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactAddPhoneNumbersAddsPhoneNumbers()
         {
-            var contact = ObjectMotherContact.Random();
-            var phone1 = ObjectMotherPhoneValueObject.Random();
-            var phone2 = ObjectMotherPhoneValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var phone1 = PhoneValueObjectObjectMother.Random();
+            var phone2 = PhoneValueObjectObjectMother.Random();
 
             contact.AddPhoneNumber(phone1);
             contact.AddPhoneNumber(phone2);
@@ -99,8 +99,8 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactAddPhoneNumbersAddNonExistingOrNull()
         {
-            var contact = ObjectMotherContact.Random();
-            var phone1 = ObjectMotherPhoneValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var phone1 = PhoneValueObjectObjectMother.Random();
 
             contact.AddPhoneNumber(phone1);
             contact.AddEmailAddress(null);
@@ -113,9 +113,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactRemovePhoneNumbersRemovesPhoneNumbers()
         {
-            var contact = ObjectMotherContact.Random();
-            var phone1 = ObjectMotherPhoneValueObject.Random();
-            var phone2 = ObjectMotherPhoneValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var phone1 = PhoneValueObjectObjectMother.Random();
+            var phone2 = PhoneValueObjectObjectMother.Random();
             contact.AddPhoneNumber(phone1);
             contact.AddPhoneNumber(phone2);
 
@@ -128,9 +128,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactRemovePhoneNumberDoesNotThrowError()
         {
-            var contact = ObjectMotherContact.Random();
-            var phone1 = ObjectMotherPhoneValueObject.Random();
-            var phone2 = ObjectMotherPhoneValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var phone1 = PhoneValueObjectObjectMother.Random();
+            var phone2 = PhoneValueObjectObjectMother.Random();
             contact.AddPhoneNumber(phone1);
 
             contact.RemovePhoneNumber(phone2);
@@ -141,14 +141,14 @@ namespace ContactsBook.Tests.Domain.Entities
 
         [Test]
         public void ContactSetInvalidNameThrowsException()
-            => Assert.Throws<DomainException>(() => ObjectMotherContact.Random().Name = null);
+            => Assert.Throws<DomainException>(() => ContactEntityObjectMother.Random().Name = null);
 
         [Test]
         public void ContactRemoveAllAddressRemoveAllAddresses()
         {
-            var contact = ObjectMotherContact.Random();
-            var email1 = ObjectMotherEmailValueObject.Random();
-            var email2 = ObjectMotherEmailValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var email1 = EmailValueObjectObjectMother.Random();
+            var email2 = EmailValueObjectObjectMother.Random();
             contact.AddEmailAddress(email1);
             contact.AddEmailAddress(email2);
 
@@ -160,9 +160,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactRemoveAllPhoneNumbersRemoveAllPhoneNumbers()
         {
-            var contact = ObjectMotherContact.Random();
-            var phone1 = ObjectMotherPhoneValueObject.Random();
-            var phone2 = ObjectMotherPhoneValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var phone1 = PhoneValueObjectObjectMother.Random();
+            var phone2 = PhoneValueObjectObjectMother.Random();
             contact.AddPhoneNumber(phone1);
             contact.AddPhoneNumber(phone2);
 
@@ -174,9 +174,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactAddEmailsListAddAllValidAndNoRepeated()
         {
-            var contact = ObjectMotherContact.Random();
-            var email1 = ObjectMotherEmailValueObject.Random();
-            var email2 = ObjectMotherEmailValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var email1 = EmailValueObjectObjectMother.Random();
+            var email2 = EmailValueObjectObjectMother.Random();
 
             contact.AddEmailAddresses(new List<string> { email1.Value, email2.Value, null, email1.Value, email2.Value });
 
@@ -188,9 +188,9 @@ namespace ContactsBook.Tests.Domain.Entities
         [Test]
         public void ContactAddPhonesListAddAllValidAndNoRepeated()
         {
-            var contact = ObjectMotherContact.Random();
-            var phone1 = ObjectMotherPhoneValueObject.Random();
-            var phone2 = ObjectMotherPhoneValueObject.Random();
+            var contact = ContactEntityObjectMother.Random();
+            var phone1 = PhoneValueObjectObjectMother.Random();
+            var phone2 = PhoneValueObjectObjectMother.Random();
 
             contact.AddPhoneNumbers(new List<Tuple<PhoneType, string>>
             { 

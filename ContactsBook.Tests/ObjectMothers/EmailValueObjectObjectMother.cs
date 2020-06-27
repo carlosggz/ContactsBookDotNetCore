@@ -1,8 +1,8 @@
 ﻿using ContactsBook.Domain.Contacts;
 
-namespace ContactsBook.Tests.Domain.ValueObjects
+namespace ContactsBook.Tests.ObjectMothers
 {
-    public static class ObjectMotherEmailValueObject
+    public static class EmailValueObjectObjectMother
     {
         public static EmailValueObject Random()
             => new EmailValueObject(Faker.Internet.Email());

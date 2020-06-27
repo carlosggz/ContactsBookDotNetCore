@@ -6,6 +6,6 @@ namespace ContactsBook.Tests.ObjectMothers
     public static class ContactEntityObjectMother
     {
         public static ContactEntity Random()
-            => new ContactEntity(new IdValueObject(), new ContactNameValueObject(Faker.Name.First(), Faker.Name.Last()));
+            => new ContactEntity(new IdValueObject(), ContactNameValueObjectObjectMother.Random());
     }
 }

@@ -11,10 +11,6 @@ namespace ContactsBook.Infrastructure.Repositories.EF.Mappings
             {
                 entity.HasKey(x => x.Id);
 
-                entity.Property(e => e.Id)
-                    .IsRequired()
-                    .HasMaxLength(36);
-
                 entity.Property(e => e.PhoneNumber)
                     .IsRequired()
                     .HasMaxLength(20);

@@ -6,7 +6,7 @@ namespace ContactsBook.Infrastructure.Repositories.EF.Models
 {
     public class ContactEmailModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Email { get; set; }
 
         public string ContactId { get; set; }

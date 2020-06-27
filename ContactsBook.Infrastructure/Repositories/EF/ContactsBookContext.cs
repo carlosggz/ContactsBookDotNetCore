@@ -9,6 +9,10 @@ namespace ContactsBook.Infrastructure.Repositories.EF
 {
     public class ContactsBookContext: DbContext
     {
+        public ContactsBookContext(DbContextOptions<ContactsBookContext> options)
+            :base(options)
+        {}
+
         public virtual DbSet<ContactModel> Contacts { get; set; }
         public virtual DbSet<ContactEmailModel> ContactEmails { get; set; }
         public virtual DbSet<ContactPhoneModel> ContactPhones { get; set; }

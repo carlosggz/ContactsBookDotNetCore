@@ -42,9 +42,14 @@ namespace ContactsBook.Infrastructure.Repositories.EF
         }
 
         public bool ExistsContactWithName(ContactNameValueObject name, IdValueObject ignoredId = null)
-            => Context
+        {
+            if (name == null)
+                throw new InvalidParametersException("Invalid name");
+
+            return Context
                 .Contacts
-                .Any(x => x.FirstName == name.FirstName && x.LastName == name.LastName && (ignoredId == null || x.Id == ignoredId.Value));
+                .Any(x => x.FirstName == name.FirstName && x.LastName == name.LastName && (ignoredId == null || x.Id != ignoredId.Value));
+        }
 
         public ContactEntity GetById(IdValueObject id)
         {

@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContactsBook.Tests.Infrastructure.EFRespositories
+namespace ContactsBook.Tests.Infrastructure.EFRepositories
 {
     [TestFixture]
-    public class ExistsContactWithNameTests: EFBaseTest
+    public class ExistsContactWithNameTests : EFBaseTest
     {
         [Test]
         public void CheckReturnTrueForExistingContact()

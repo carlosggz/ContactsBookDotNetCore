@@ -4,15 +4,16 @@ using ContactsBook.Tests.ObjectMothers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace ContactsBook.Tests.Infrastructure.EFRespositories
+namespace ContactsBook.Tests.Infrastructure.EFRepositories
 {
     [TestFixture]
-    public class UpdateContactTests: EFBaseTest
+    public class AddContactTests : EFBaseTest
     {
         [Test]
-        public void UpdateContactUpdateTheEntity()
+        public void AddContactAddTheEntity()
         {
             var entity = ContactEntityObjectMother.Random();
             entity.AddEmailAddress(EmailValueObjectObjectMother.Random());
@@ -20,28 +21,17 @@ namespace ContactsBook.Tests.Infrastructure.EFRespositories
             entity.AddEmailAddress(EmailValueObjectObjectMother.Random());
             entity.AddPhoneNumber(PhoneValueObjectObjectMother.Random());
             entity.AddPhoneNumber(PhoneValueObjectObjectMother.Random());
-            _repo.Add(entity);
-            _context.SaveChanges();
-            entity.Name = ContactNameValueObjectObjectMother.Random();
-            entity.AddEmailAddress(EmailValueObjectObjectMother.Random());
-            entity.AddPhoneNumber(PhoneValueObjectObjectMother.Random());
 
-            _repo.Update(entity);
+            _repo.Add(entity);
 
             _context.SaveChanges();
             VerifySaved(entity);
         }
 
         [Test]
-        public void UpdateNullEntityThrowsException()
+        public void AddNullEntityThrowsException()
         {
-            Assert.Throws<InvalidEntityException>(() => _repo.Update(null));
-        }
-
-        [Test]
-        public void UpdateNonExistingEntityThrowsException()
-        {
-            Assert.Throws<InvalidEntityException>(() => _repo.Update(ContactEntityObjectMother.Random()));
+            Assert.Throws<InvalidEntityException>(() => _repo.Add(null));
         }
     }
 }

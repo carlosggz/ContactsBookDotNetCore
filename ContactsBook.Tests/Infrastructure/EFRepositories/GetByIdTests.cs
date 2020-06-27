@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ContactsBook.Tests.Infrastructure.EFRespositories
+namespace ContactsBook.Tests.Infrastructure.EFRepositories
 {
     [TestFixture]
-    public class GetByIdTests: EFBaseTest
+    public class GetByIdTests : EFBaseTest
     {
         [Test]
         public void GetAnUnknowContactReturnNull()

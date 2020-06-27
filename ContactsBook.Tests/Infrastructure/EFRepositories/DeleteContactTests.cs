@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ContactsBook.Tests.Infrastructure.EFRespositories
+namespace ContactsBook.Tests.Infrastructure.EFRepositories
 {
     [TestFixture]
-    public class DeleteContactTests: EFBaseTest
+    public class DeleteContactTests : EFBaseTest
     {
         [Test]
         public void DeleteRemoveTheContact()

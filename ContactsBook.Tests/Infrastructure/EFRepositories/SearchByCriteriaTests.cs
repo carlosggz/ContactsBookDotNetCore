@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ContactsBook.Tests.Infrastructure.EFRespositories
+namespace ContactsBook.Tests.Infrastructure.EFRepositories
 {
     [TestFixture]
-    public class SearchByCriteriaTests: EFBaseTest
+    public class SearchByCriteriaTests : EFBaseTest
     {
         [Test]
         public void SearchWithoutContactsReturnEmptyresult()
@@ -58,7 +58,7 @@ namespace ContactsBook.Tests.Infrastructure.EFRespositories
             third.Name = new ContactNameValueObject("Foo", "Pet");
             _repo.Add(first);
             _repo.Add(second);
-            _repo.Add(third);            
+            _repo.Add(third);
             _context.SaveChanges();
 
             var results1 = _repo.SearchByCriteria(new ContactSearchCriteria(1, 1, "Pet"));

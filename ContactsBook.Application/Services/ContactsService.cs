@@ -3,6 +3,7 @@ using ContactsBook.Application.Exceptions;
 using ContactsBook.Common.Events;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Repositories;
+using ContactsBook.Domain;
 using ContactsBook.Domain.Common;
 using ContactsBook.Domain.Contacts;
 using System;
@@ -16,13 +17,9 @@ namespace ContactsBook.Application.Services
 {
     public class ContactsService: BaseService
     {
-        private readonly IContactsRepository _contactsRepository;
-
-        public ContactsService(IUnitOfWork unitOfWork, IEventBus domainBus, IContactsRepository contactsRepository) 
+        public ContactsService(IContactsBookUnitOfWork unitOfWork, IEventBus domainBus) 
             : base(unitOfWork, domainBus)
-        {
-            _contactsRepository = contactsRepository;
-        }
+        {}
 
         //Add use case
         public void AddContact(ContactsModel model)
@@ -31,7 +28,7 @@ namespace ContactsBook.Application.Services
 
             var name = new ContactNameValueObject(model.FirstName, model.LastName);
 
-            if (_contactsRepository.ExistsContactWithName(name))
+            if (UnitOfWork.ContactsRepository.ExistsContactWithName(name))
                 throw new DomainException("There is already a contact with that name");
 
             var contact = new ContactEntity(new IdValueObject(model.Id), name);
@@ -40,7 +37,7 @@ namespace ContactsBook.Application.Services
 
             EventBus.Record(new ContactAddedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
-            UoWExecute(() => _contactsRepository.Add(contact));
+            UoWExecute(() => UnitOfWork.ContactsRepository.Add(contact));
         }
 
         //Update use case
@@ -51,7 +48,7 @@ namespace ContactsBook.Application.Services
             var id = new IdValueObject(model.Id);
             var name = new ContactNameValueObject(model.FirstName, model.LastName);
 
-            if (_contactsRepository.ExistsContactWithName(name, id))
+            if (UnitOfWork.ContactsRepository.ExistsContactWithName(name, id))
                 throw new DomainException("There is already a contact with that name");
 
             var contact = GetContact(id);
@@ -63,7 +60,7 @@ namespace ContactsBook.Application.Services
 
             EventBus.Record(new ContactUpdatedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
-            UoWExecute(() => _contactsRepository.Update(contact));
+            UoWExecute(() => UnitOfWork.ContactsRepository.Update(contact));
         }
 
         //Delete use case
@@ -76,7 +73,7 @@ namespace ContactsBook.Application.Services
 
             EventBus.Record(new ContactDeletedDomainEvent(contact.Id.Value, contact.Name.FirstName, contact.Name.LastName));
 
-            UoWExecute(() => _contactsRepository.Delete(contact.Id));
+            UoWExecute(() => UnitOfWork.ContactsRepository.Delete(contact.Id));
         }
 
         //Search use case
@@ -85,7 +82,7 @@ namespace ContactsBook.Application.Services
             if (page < 1 || size < 1)
                 throw new InvalidParametersException("Invalid search parameters");
 
-            return _contactsRepository.SearchByCriteria(new ContactSearchCriteria(page, size, text));
+            return UnitOfWork.ContactsRepository.SearchByCriteria(new ContactSearchCriteria(page, size, text));
         }
 
         #region Helpers
@@ -94,7 +91,7 @@ namespace ContactsBook.Application.Services
             if (id == null)
                 throw new InvalidEntityException("Invalid id");
 
-            return _contactsRepository.GetById(id) ?? throw new InvalidEntityException("Contact not found");
+            return UnitOfWork.ContactsRepository.GetById(id) ?? throw new InvalidEntityException("Contact not found");
         }
 
         #endregion

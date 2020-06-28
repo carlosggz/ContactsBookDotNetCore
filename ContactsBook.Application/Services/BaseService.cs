@@ -3,6 +3,7 @@ using ContactsBook.Application.Exceptions;
 using ContactsBook.Common.Events;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Repositories;
+using ContactsBook.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace ContactsBook.Application.Services
 {
     public class BaseService
     {
-        public BaseService(IUnitOfWork unitOfWork, IEventBus eventBus)
+        public BaseService(IContactsBookUnitOfWork unitOfWork, IEventBus eventBus)
         {
             UnitOfWork = unitOfWork;
             EventBus = eventBus;
         }
 
-        protected IUnitOfWork UnitOfWork { get; private set; }
+        protected IContactsBookUnitOfWork UnitOfWork { get; private set; }
         protected IEventBus EventBus { get; private set; }
 
 
@@ -46,6 +47,7 @@ namespace ContactsBook.Application.Services
             catch (Exception)
             {
                 UnitOfWork.RollbackChanges();
+                EventBus.DiscardEvents();
                 throw;
             }
 

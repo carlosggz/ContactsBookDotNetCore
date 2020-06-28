@@ -7,6 +7,7 @@ namespace ContactsBook.Common.Events
     {
         void Record(IDomainEvent domainEvent);
         Task PublishAsync();
+        void DiscardEvents();
     }
 
 }

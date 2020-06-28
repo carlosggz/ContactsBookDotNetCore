@@ -4,5 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ContactsBook.Application\ContactsBook.Application.csproj" />
+    <ProjectReference Include="..\ContactsBook.Common\ContactsBook.Common.csproj" />
+    <ProjectReference Include="..\ContactsBook.Domain\ContactsBook.Domain.csproj" />
+    <ProjectReference Include="..\ContactsBook.Infrastructure\ContactsBook.Infrastructure.csproj" />
+  </ItemGroup>
+
 
 </Project>

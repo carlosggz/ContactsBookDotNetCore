@@ -50,7 +50,7 @@ namespace ContactsBook.Tests.Application.ContactService
             var id = new IdValueObject();
             _repo.Setup(x => x.GetById(It.Is<IdValueObject>(p => p == id))).Returns<ContactEntity>(null);
 
-            Assert.Throws<InvalidEntityException>(() => _contactsService.DeleteContact(id.Value));
+            Assert.Throws<EntityNotFound>(() => _contactsService.DeleteContact(id.Value));
             _repo.VerifyAll();
         }
     }

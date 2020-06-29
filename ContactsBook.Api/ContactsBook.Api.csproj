@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>$(NoWarn);1591</NoWarn>	  
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +22,5 @@
     <ProjectReference Include="..\ContactsBook.Domain\ContactsBook.Domain.csproj" />
     <ProjectReference Include="..\ContactsBook.Infrastructure\ContactsBook.Infrastructure.csproj" />
   </ItemGroup>
-
 
 </Project>

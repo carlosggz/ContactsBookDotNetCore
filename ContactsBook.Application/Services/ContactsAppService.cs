@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ContactsBook.Application.Services
@@ -85,13 +86,27 @@ namespace ContactsBook.Application.Services
             return UnitOfWork.ContactsRepository.SearchByCriteria(new ContactSearchCriteria(page, size, text));
         }
 
+        //Get contact by id
+        public ContactsModel GetContact(string id)
+        {
+            var entity = GetContact(new IdValueObject(id));
+
+            return new ContactsModel()
+            {
+                Id = entity.Id.Value,
+                FirstName = entity.Name.FirstName,
+                LastName = entity.Name.LastName,
+                EmailAddresses = entity.EmailAddresses.Select(x => x.Value),
+                PhoneNumbers = entity.PhoneNumbers.Select(x => new PhoneNumberModel() { PhoneType = x.PhoneType, PhoneNumber = x.PhoneNumber })
+            };
+        }
         #region Helpers
         private ContactEntity GetContact(IdValueObject id)
         {
             if (id == null)
                 throw new InvalidEntityException("Invalid id");
 
-            return UnitOfWork.ContactsRepository.GetById(id) ?? throw new InvalidEntityException("Contact not found");
+            return UnitOfWork.ContactsRepository.GetById(id) ?? throw new EntityNotFound("Contact not found");
         }
 
         #endregion

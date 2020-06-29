@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using ContactsBook.Api.Helpers;
 using ContactsBook.Application.Services;
@@ -41,6 +43,11 @@ namespace ContactsBook.Api
             services.AddSwaggerGen(options => {
                 options.SwaggerDoc("v1", new OpenApiInfo() { Title = "Contacts Book API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
             });
 
             var section = Configuration.GetSection("SmtpSettings");

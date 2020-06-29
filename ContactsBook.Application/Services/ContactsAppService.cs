@@ -15,11 +15,11 @@ using System.Text;
 
 namespace ContactsBook.Application.Services
 {
-    public class ContactsService: BaseService
+    public class ContactsAppService : BaseAppService, IContactsAppService
     {
-        public ContactsService(IContactsBookUnitOfWork unitOfWork, IEventBus domainBus) 
+        public ContactsAppService(IContactsBookUnitOfWork unitOfWork, IEventBus domainBus)
             : base(unitOfWork, domainBus)
-        {}
+        { }
 
         //Add use case
         public void AddContact(ContactsModel model)

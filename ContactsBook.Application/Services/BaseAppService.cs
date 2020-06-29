@@ -11,9 +11,9 @@ using System.Text;
 
 namespace ContactsBook.Application.Services
 {
-    public class BaseService
+    public class BaseAppService
     {
-        public BaseService(IContactsBookUnitOfWork unitOfWork, IEventBus eventBus)
+        public BaseAppService(IContactsBookUnitOfWork unitOfWork, IEventBus eventBus)
         {
             UnitOfWork = unitOfWork;
             EventBus = eventBus;

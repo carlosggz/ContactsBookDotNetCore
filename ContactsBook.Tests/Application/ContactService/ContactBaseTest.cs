@@ -16,7 +16,7 @@ namespace ContactsBook.Tests.Application.ContactService
         protected Mock<IContactsRepository> _repo;
         protected Mock<IContactsBookUnitOfWork> _uof;
         protected Mock<IEventBus> _eventBus;
-        protected ContactsService _contactsService;
+        protected ContactsAppService _contactsService;
 
         [SetUp]
         public void Init()
@@ -27,7 +27,7 @@ namespace ContactsBook.Tests.Application.ContactService
 
             _uof.Setup(x => x.ContactsRepository).Returns(_repo.Object);
 
-            _contactsService = new ContactsService(_uof.Object, _eventBus.Object);
+            _contactsService = new ContactsAppService(_uof.Object, _eventBus.Object);
         }
 
     }

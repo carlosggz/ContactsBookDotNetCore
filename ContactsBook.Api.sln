@@ -21,11 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Tests", "ContactsBook.Tests\ContactsBook.Tests.csproj", "{180CD08A-5BA9-42DD-BCF2-46CE5AACB969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Api.IntegrationTests", "ContactsBook.Api.IntegrationTests\ContactsBook.Api.IntegrationTests.csproj", "{384B1A46-C183-4D43-B87D-EF7124666083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Api.AcceptanceTests", "ContactsBook.Api.IntegrationTests\ContactsBook.Api.AcceptanceTests.csproj", "{384B1A46-C183-4D43-B87D-EF7124666083}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Api.UnitTests", "ContactsBook.Api.UnitTests\ContactsBook.Api.UnitTests.csproj", "{7C75527E-08FC-4CE8-8C5D-365EB063B48E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Api.UnitTests", "ContactsBook.Api.UnitTests\ContactsBook.Api.UnitTests.csproj", "{7C75527E-08FC-4CE8-8C5D-365EB063B48E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsBook.Tests.Common", "ContactsBook.Tests.Common\ContactsBook.Tests.Common.csproj", "{B2FF7FD7-ED74-4800-A5BB-8947AC33D66B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsBook.Tests.Common", "ContactsBook.Tests.Common\ContactsBook.Tests.Common.csproj", "{B2FF7FD7-ED74-4800-A5BB-8947AC33D66B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

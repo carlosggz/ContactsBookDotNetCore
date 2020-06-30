@@ -12,7 +12,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ContactsBook.Api.IntegrationTests.Contacts
+namespace ContactsBook.Api.AcceptanceTests.Contacts
 {
     public abstract class BaseContactsTests
     {
@@ -31,7 +31,7 @@ namespace ContactsBook.Api.IntegrationTests.Contacts
             var hostBuilder = new WebHostBuilder()
                 .UseConfiguration(appConfig)
                 .UseEnvironment("Testing")
-                .UseStartup<ContactsBook.Api.Startup>();
+                .UseStartup<Startup>();
 
             _server = new TestServer(hostBuilder);
             _client = _server.CreateClient();

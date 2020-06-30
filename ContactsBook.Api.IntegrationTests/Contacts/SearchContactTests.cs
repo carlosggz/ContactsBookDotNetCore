@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 
-namespace ContactsBook.Api.IntegrationTests.Contacts
+namespace ContactsBook.Api.AcceptanceTests.Contacts
 {
     [TestFixture]
     public class SearchContactTests : BaseContactsTests

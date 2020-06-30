@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Security.Policy;
 using System.Threading.Tasks;
 
-namespace ContactsBook.Api.IntegrationTests.Contacts
+namespace ContactsBook.Api.AcceptanceTests.Contacts
 {
     [TestFixture]
     public class GetContactTests : BaseContactsTests
@@ -30,6 +30,7 @@ namespace ContactsBook.Api.IntegrationTests.Contacts
         public void ValidContactReturnsOk()
         {
             var entity = ContactEntityObjectMother.Random();
+            _uow.StartChanges();
             _uow.ContactsRepository.Add(entity);
             _uow.CommitChanges();
 
@@ -51,7 +52,7 @@ namespace ContactsBook.Api.IntegrationTests.Contacts
         }
 
         [Test]
-        public void  NullIdReturnsNotfound()
+        public void NullIdReturnsNotfound()
         {
             VerifyCall(string.Empty, System.Net.HttpStatusCode.NotFound);
         }

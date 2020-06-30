@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System;
 
-namespace ContactsBook.Api.IntegrationTests.Contacts
+namespace ContactsBook.Api.AcceptanceTests.Contacts
 {
     [TestFixture]
     public class DeleteContactTests : BaseContactsTests
@@ -20,6 +20,7 @@ namespace ContactsBook.Api.IntegrationTests.Contacts
         public void ValidContactReturnsOk()
         {
             var entity = ContactEntityObjectMother.Random();
+            _uow.StartChanges();
             _uow.ContactsRepository.Add(entity);
             _uow.CommitChanges();
 

@@ -1,7 +1,7 @@
 {
-  "profiles": {
-    "ContactsBook.Api.IntegrationTests": {
-      "commandName": "Project"
+    "profiles": {
+        "ContactsBook.Api.AcceptanceTests": {
+            "commandName": "Project"
+        }
     }
-  }
 }

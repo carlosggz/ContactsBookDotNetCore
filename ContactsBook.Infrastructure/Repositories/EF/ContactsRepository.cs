@@ -57,7 +57,11 @@ namespace ContactsBook.Infrastructure.Repositories.EF
             if (id == null)
                 throw new InvalidParametersException("Invalid contact id");
 
-            var contact = Context.Contacts.SingleOrDefault(x => x.Id == id.Value);
+            var contact = Context
+                .Contacts
+                .Include(x => x.Emails)
+                .Include(x => x.Phones)
+                .SingleOrDefault(x => x.Id == id.Value);
 
             return contact?.ToEntity();
         }
@@ -76,7 +80,7 @@ namespace ContactsBook.Infrastructure.Repositories.EF
                 .Skip((criteria.PageNumber - 1) * criteria.PageSize)
                 .Take(criteria.PageSize)
                 .Select(x => x.ToContactDto())
-                .ToList();           
+                .ToList();                
 
             return new SearchResults<ContactDto>(count, items);
         }

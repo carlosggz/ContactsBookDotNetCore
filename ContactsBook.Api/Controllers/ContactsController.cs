@@ -112,7 +112,7 @@ namespace ContactsBook.Api.Controllers
         /// <param name="id">Contact Id</param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("Delete/{id}")]
+        [Route("{id}")]
         public ActionResult<ApiContactResultModel> Delete([FromRoute] string id)
         {
             var result = new ApiContactResultModel();
@@ -148,7 +148,7 @@ namespace ContactsBook.Api.Controllers
         /// <param name="id">Contact Id</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Get/{id}")]
+        [Route("{id}")]
         public ActionResult<ContactsModel> Get([FromRoute] string id)
         {
             try
@@ -193,6 +193,5 @@ namespace ContactsBook.Api.Controllers
                 return BadRequest();
             }
         }
-
     }
 }

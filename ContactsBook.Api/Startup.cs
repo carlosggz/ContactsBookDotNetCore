@@ -75,7 +75,7 @@ namespace ContactsBook.Api
             );
 
             services
-                .AddDbContext<ContactsBookContext>(options => options.UseInMemoryDatabase(databaseName: "development"));
+                .AddDbContext<ContactsBookContext>(options => options.UseSqlServer(Configuration["App:ConnectionString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

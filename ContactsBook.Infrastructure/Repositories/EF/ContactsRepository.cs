@@ -3,6 +3,7 @@ using ContactsBook.Common.Repositories;
 using ContactsBook.Domain.Common;
 using ContactsBook.Domain.Contacts;
 using ContactsBook.Infrastructure.Repositories.EF.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,10 +62,12 @@ namespace ContactsBook.Infrastructure.Repositories.EF
             return contact?.ToEntity();
         }
 
-        public SearchsResults<ContactDto> SearchByCriteria(ContactSearchCriteria criteria)
+        public SearchResults<ContactDto> SearchByCriteria(ContactSearchCriteria criteria)
         {
             var query = Context
                 .Contacts
+                .Include(x => x.Emails)
+                .Include(x => x.Phones)
                 .Where(x => string.IsNullOrWhiteSpace(criteria.Text) || x.FirstName.Contains(criteria.Text) || x.LastName.Contains(criteria.Text));
 
             var count = query.Count();
@@ -75,7 +78,7 @@ namespace ContactsBook.Infrastructure.Repositories.EF
                 .Select(x => x.ToContactDto())
                 .ToList();           
 
-            return new SearchsResults<ContactDto>(count, items);
+            return new SearchResults<ContactDto>(count, items);
         }
 
         public void Update(ContactEntity entity)

@@ -21,7 +21,7 @@ namespace ContactsBook.Tests.Application.ContactService
             var size = rnd.Next(1, 100);
             var text = Faker.Lorem.GetFirstWord();
             var contact = ContactEntityObjectMother.Random();
-            var toReturn = new SearchsResults<ContactDto>(
+            var toReturn = new SearchResults<ContactDto>(
                 rnd.Next(1, 100), 
                 new List<ContactDto>() 
                     { 

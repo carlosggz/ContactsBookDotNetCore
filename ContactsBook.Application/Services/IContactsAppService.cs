@@ -9,7 +9,7 @@ namespace ContactsBook.Application.Services
         void AddContact(ContactsModel model);
         void DeleteContact(string id);
         ContactsModel GetContact(string id);
-        SearchsResults<ContactDto> GetContactsByName(int page, int size, string text);
+        SearchResults<ContactDto> GetContactsByName(int page, int size, string text);
         void UpdateContact(ContactsModel model);
     }
 }

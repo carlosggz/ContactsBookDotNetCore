@@ -78,7 +78,7 @@ namespace ContactsBook.Application.Services
         }
 
         //Search use case
-        public SearchsResults<ContactDto> GetContactsByName(int page, int size, string text)
+        public SearchResults<ContactDto> GetContactsByName(int page, int size, string text)
         {
             if (page < 1 || size < 1)
                 throw new InvalidParametersException("Invalid search parameters");

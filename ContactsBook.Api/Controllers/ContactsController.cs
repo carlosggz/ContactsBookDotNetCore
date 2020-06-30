@@ -9,6 +9,7 @@ using ContactsBook.Application.Services;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Logger;
 using ContactsBook.Common.Mailer;
+using ContactsBook.Common.Repositories;
 using ContactsBook.Domain.Common;
 using ContactsBook.Domain.Contacts;
 using Microsoft.AspNetCore.Mvc;
@@ -175,11 +176,12 @@ namespace ContactsBook.Api.Controllers
         /// <param name="criteria">Criteria</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<IEnumerable<ContactDto>> Search([FromBody] ContactsSearchCriteriaModel criteria)
+        public ActionResult<SearchResults<ContactDto>> Search([FromBody] ContactsSearchCriteriaModel criteria)
         {
             try
             {
-                return Ok(_service.GetContactsByName(criteria.PageNumber, criteria.PageSize, criteria.Text));
+                var results = _service.GetContactsByName(criteria.PageNumber, criteria.PageSize, criteria.Text);
+                return Ok(results);
             }
             catch (InvalidParametersException)
             {

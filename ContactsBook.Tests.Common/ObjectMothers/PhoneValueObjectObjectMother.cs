@@ -1,7 +1,7 @@
 ﻿using ContactsBook.Domain.Contacts;
 using System;
 
-namespace ContactsBook.Tests.ObjectMothers
+namespace ContactsBook.Tests.Common.ObjectMothers
 {
     public static class PhoneValueObjectObjectMother
     {

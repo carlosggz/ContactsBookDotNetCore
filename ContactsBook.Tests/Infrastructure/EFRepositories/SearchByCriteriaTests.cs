@@ -1,6 +1,6 @@
 ﻿using ContactsBook.Domain.Common;
 using ContactsBook.Domain.Contacts;
-using ContactsBook.Tests.ObjectMothers;
+using ContactsBook.Tests.Common.ObjectMothers;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ContactsBook.Tests.ObjectMothers
+namespace ContactsBook.Tests.Common.ObjectMothers
 {
     public static class ContactsModelObjectMother
     {
@@ -22,9 +22,9 @@ namespace ContactsBook.Tests.ObjectMothers
                 },
                 PhoneNumbers = new List<PhoneNumberModel>
                 {
-                    new PhoneNumberModel() 
-                    { 
-                        PhoneType = PhoneValueObjectObjectMother.GetRandomPhoneType(), 
+                    new PhoneNumberModel()
+                    {
+                        PhoneType = PhoneValueObjectObjectMother.GetRandomPhoneType(),
                         PhoneNumber = PhoneValueObjectObjectMother.GetRandomPhoneNumber()
                     }
                 }

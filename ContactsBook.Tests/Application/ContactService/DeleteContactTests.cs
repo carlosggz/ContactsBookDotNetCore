@@ -3,7 +3,7 @@ using ContactsBook.Application.Services;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Common;
 using ContactsBook.Domain.Contacts;
-using ContactsBook.Tests.ObjectMothers;
+using ContactsBook.Tests.Common.ObjectMothers;
 using Moq;
 using NUnit.Framework;
 using System.Threading.Tasks;

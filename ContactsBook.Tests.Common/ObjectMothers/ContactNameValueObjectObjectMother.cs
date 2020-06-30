@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContactsBook.Tests.ObjectMothers
+namespace ContactsBook.Tests.Common.ObjectMothers
 {
     public static class ContactNameValueObjectObjectMother
     {

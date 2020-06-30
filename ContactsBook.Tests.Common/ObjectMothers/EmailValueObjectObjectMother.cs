@@ -1,6 +1,6 @@
 ﻿using ContactsBook.Domain.Contacts;
 
-namespace ContactsBook.Tests.ObjectMothers
+namespace ContactsBook.Tests.Common.ObjectMothers
 {
     public static class EmailValueObjectObjectMother
     {

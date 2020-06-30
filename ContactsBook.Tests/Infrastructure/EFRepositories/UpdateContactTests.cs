@@ -1,6 +1,6 @@
 ﻿using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Contacts;
-using ContactsBook.Tests.ObjectMothers;
+using ContactsBook.Tests.Common.ObjectMothers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

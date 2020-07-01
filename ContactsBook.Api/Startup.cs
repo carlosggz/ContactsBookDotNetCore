@@ -91,6 +91,7 @@ namespace ContactsBook.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                ApplyMigrations(app);
             }
 
             app.UseSwagger();
@@ -109,6 +110,19 @@ namespace ContactsBook.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void ApplyMigrations(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<ContactsBookContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }

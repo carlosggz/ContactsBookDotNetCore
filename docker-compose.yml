@@ -1,0 +1,34 @@
+version: "3.4"
+
+services:
+  api:
+    build: 
+      dockerfile: ./Dockerfile.api
+      context: .
+    container_name: contactsbook.api.v1
+    image: contactsbook.api/v1
+    ports:
+      - '5000:80'
+    environment:
+      ASPNETCORE_ENVIRONMENT: 'Docker'
+    volumes:
+      - ./logs:/publish/logs
+    depends_on:
+      - apisql
+      - apimail
+    entrypoint: ["/wait-for-it.sh", "apisql:1433", "-t", "60", "--", "dotnet", "ContactsBook.Api.dll"]
+            
+  apisql:
+    image: mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
+    container_name: contactsbook.sql.v1
+    environment:
+      - SA_PASSWORD=ContactsBook#Sql@123
+      - ACCEPT_EULA=Y
+    ports:
+      - '5433:1433'
+
+  apimail:
+    image: djfarrelly/maildev
+    ports:
+      - '1025:25'
+      - '1080:80'

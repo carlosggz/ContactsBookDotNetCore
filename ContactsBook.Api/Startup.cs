@@ -118,10 +118,15 @@ namespace ContactsBook.Api
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope())
             {
+                var logger = serviceScope.ServiceProvider.GetService<IAppLogger>();
+                
+
                 using (var context = serviceScope.ServiceProvider.GetService<ContactsBookContext>())
                 {
+                    logger.Debug("Running migrations...");
                     context.Database.Migrate();
-                }
+                    logger.Debug("Migrations completed");
+                }                
             }
         }
     }

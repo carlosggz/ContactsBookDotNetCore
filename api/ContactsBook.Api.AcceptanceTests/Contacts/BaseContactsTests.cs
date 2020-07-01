@@ -25,12 +25,12 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         {
             var appConfig = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Testing.json")
                 .Build();
 
             var hostBuilder = new WebHostBuilder()
-                .UseConfiguration(appConfig)
                 .UseEnvironment("Testing")
+                .UseConfiguration(appConfig)                
                 .UseStartup<Startup>();
 
             _server = new TestServer(hostBuilder);

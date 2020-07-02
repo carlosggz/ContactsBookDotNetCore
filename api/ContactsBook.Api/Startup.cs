@@ -28,6 +28,7 @@ namespace ContactsBook.Api
 {
     public class Startup
     {
+        const string PolicyName = "localhost";
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
@@ -64,7 +65,7 @@ namespace ContactsBook.Api
             // Configure CORS for angular2 UI
             services.AddCors(
                 options => options.AddPolicy(
-                    "localhost",
+                    PolicyName,
                     builder => builder
                         .WithOrigins(
                             // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
@@ -105,6 +106,8 @@ namespace ContactsBook.Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(PolicyName);
 
             app.UseEndpoints(endpoints =>
             {

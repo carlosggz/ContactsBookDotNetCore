@@ -1,0 +1,21 @@
+<app-back-to-list></app-back-to-list>
+<div class="row">
+    <div class="col">
+        <div class="card" style="width: 28rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{ contact.firstName }} {{ contact.lastName }}</h5>
+              <br/>              
+              <h6 class="card-subtitle mb-2 text-muted" *ngIf="contact.emailAddresses && contact.emailAddresses.length">Email addresses</h6>
+              <ul *ngIf="contact.emailAddresses && contact.emailAddresses.length">
+                  <li *ngFor="let email of contact.emailAddresses">{{ email }}</li>                  
+              </ul>
+              <br />
+              <h6 class="card-subtitle mb-2 text-muted" *ngIf="contact.phoneNumbers && contact.phoneNumbers.length">Phone Numbers</h6>
+              <ul *ngIf="contact.phoneNumbers && contact.phoneNumbers.length">
+                <li *ngFor="let phone of contact.phoneNumbers">{{ phoneTypeDesc[phone.phoneType] }} - {{ phone.phoneNumber }}</li>                  
+            </ul>
+            </div>
+          </div>
+    </div>
+</div>
+

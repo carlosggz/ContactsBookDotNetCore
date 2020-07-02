@@ -1,0 +1,19 @@
+.site-logo {
+    max-width: 40px;
+}
+
+.site-title {
+    margin-left: 10px;
+    font-size: 30px;
+    vertical-align: middle;
+}
+
+.site-footer {
+    text-align: right;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.site-content {
+    min-height: 300px;
+}

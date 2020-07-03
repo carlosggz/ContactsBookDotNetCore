@@ -1,26 +1,37 @@
-<p class="text-right">
-    <a [routerLink]="['add']">
+<form>
+  <div class="row">
+
+    <div class="form-group col-6">
+      <input type="text" class="form-control" placeholder="Type a filter" aria-label="Text to search" 
+      aria-describedby="btnSearch" [(ngModel)]="filteredText" maxlength="50" name="TextToSearch"
+      (keyup)="filter()">
+    </div>
+
+    <div class="form-group col-6 text-right">
+      <a [routerLink]="['add']">
         <img src="assets/add-contact.png" /> Add Contact
-    </a>
-</p>
+       </a>      
+    </div>    
+ </div>
+</form>
 <p *ngIf="!contacts.length">No contacts found</p>
 <table class="table table-striped table-hover" *ngIf="contacts.length">
   <thead class="thead-dark">
   <tr>
-    <th scope="col">First Name</th>
-    <th scope="col">Last Name</th>
-    <th scope="col" class="text-center">Emails</th>
-    <th scope="col" class="text-center">Phones</th>
-    <th>&nbsp;</th>
+    <th scope="col" class="col-4 col-sm-4">First Name</th>
+    <th scope="col" class="col-4 col-sm-4">Last Name</th>
+    <th scope="col" class="col-sm-1 text-center d-none d-sm-table-cell">Emails</th>
+    <th scope="col" class="col-sm-1 text-center d-none d-sm-table-cell">Phones</th>
+    <th scope="col" class="col-4 col-sm-2">&nbsp;</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let contact of contacts">
     <td>{{ contact.firstName }}</td>
     <td>{{ contact.lastName }}</td>
-    <td class="text-center">{{ contact.emailsCount }}</td>
-    <td class="text-center">{{ contact.phonesCount }}</td>
-    <td>
+    <td class="text-center d-none d-sm-table-cell">{{ contact.emailsCount }}</td>
+    <td class="text-center d-none d-sm-table-cell">{{ contact.phonesCount }}</td>
+    <td class="text-center">
       <a title="Card" [routerLink]="['card', contact.contactId]">
         <img src="assets/card.png" />
       </a>      
@@ -37,7 +48,10 @@
   </tbody>
 </table>
 
-<div class="d-flex justify-content-between p-2" *ngIf="total > pageSize">
-  <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
-  </ngb-pagination>
-</div>
+<ngb-pagination *ngIf="total > pageSize"
+  class="d-flex justify-content-center"
+    [collectionSize]="total" 
+    [(page)]="page" 
+    [pageSize]="pageSize" 
+    (pageChange)="gotoPage($event)">
+</ngb-pagination>

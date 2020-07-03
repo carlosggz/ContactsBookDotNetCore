@@ -11,9 +11,10 @@ export class ContactsListComponent implements OnInit {
 
   contacts: ContactDto[] = [];
   pageNumber = 1;
-  pageSize = 4;
+  pageSize = 3;
   text = '';
   total = 0;  
+  filteredText = '';
 
   constructor(
       private _msgService: MessageService,
@@ -61,5 +62,20 @@ export class ContactsListComponent implements OnInit {
         this.contacts = x.results;
         this.total = x.total;
       });
+  }
+
+  gotoPage(newPage: number) {
+    if (!newPage) {
+      return;
+    }
+
+    this.pageNumber = newPage;
+    this.search();
+  }
+
+  filter() {
+    this.text = this.filteredText.trim();
+    console.log(this.text)
+    this.search();
   }
 }

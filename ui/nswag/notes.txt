@@ -1,0 +1,6 @@
+The generated swagger code for proxies, only managed some errors. I added changed it because the API already controlled some cases, like:
+- 400 for add
+- 400, 404 for update and get
+- 400 for search
+
+I changed it directly on the proxies code.

@@ -27,7 +27,7 @@ export class ContactItem {
   
     removeAddress = (id: number) =>this.emails = this.emails.filter(x => x.id != id);
     
-    addPhone = () => this.phones.push({ id: this.getNextId(this.phones), phoneType: PhoneType._0, phoneNumber: ''}) ;
+    addPhone = () => this.phones.push({ id: this.getNextId(this.phones), phoneType: 0, phoneNumber: ''}) ;
     
     removePhone = (id: number) => this.phones = this.phones.filter(x => x.id != id);
 
@@ -60,14 +60,15 @@ export class ContactItem {
     }
 
     convertToPhoneType(s: string): PhoneType {
+
       //Due to the limitation on the nswag generator
       switch(Number.parseInt(s.toString())) {
         case 0:
-          return PhoneType._0;
+          return 0;
         case 1:
-          return PhoneType._1;
+          return 1;
         default:
-          return PhoneType._2;
+          return 2;
       }
     }
 

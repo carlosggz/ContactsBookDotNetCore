@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from '../services/message.service';
 import { ContactsServiceProxy, ContactsModel } from '../services/service-proxies';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {PhoneTypeName} from '../shared/phonetype.enum';
 
 @Component({
@@ -16,6 +16,7 @@ export class ContactCardComponent implements OnInit {
   phoneTypeDesc = PhoneTypeName;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private _msgService: MessageService,
     private _contactsService: ContactsServiceProxy) { 
@@ -33,6 +34,7 @@ export class ContactCardComponent implements OnInit {
       },
       error => {
         this._msgService.showError('Error', `There was an error: ${error}`);
+        this.router.navigate(['/']);
       });
   }
 

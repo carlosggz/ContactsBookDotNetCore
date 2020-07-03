@@ -14,6 +14,7 @@ import {API_BASE_URL} from './services/service-proxies';
 import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { BackToListComponent } from './back-to-list/back-to-list.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BackToListComponent } from './back-to-list/back-to-list.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     { provide: API_BASE_URL, useFactory: () => environment.apiUrl },

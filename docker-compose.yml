@@ -32,3 +32,13 @@ services:
     ports:
       - '1025:25'
       - '1080:80'
+  site:
+    build: 
+      dockerfile: ./Dockerfile.ui
+      context: .
+    container_name: contactsbook.ui.v1
+    image: contactsbook.ui/v1
+    ports:
+      - '4200:80'
+    depends_on:
+      - api

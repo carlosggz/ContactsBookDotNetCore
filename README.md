@@ -16,13 +16,20 @@ API example using best practices:
 
 First, clone the repository.
 
-To run directly:
-* Change your parameters on the app settings file
-* Run the application on your IDE or at the cli. (If you are in the development environment, migrations will be applied automatically.)
-* Open your browser at http://localhost:5000/ to test the api
-
 To run using docker:
 * Run docker-compose up --build
 (The composer will wait until the database is up, and the will the run the application. Migrations will be applied automatically.)
 * Open your browser at http://localhost:5000/ to test the api
 * Mail server will be available at http://localhost:1080/
+* Open your browser at http://localhost:4200/ to test the angular client
+
+To run the api directly:
+* Change your parameters on the app settings file
+* Run the application on your IDE or at the cli. (If you are in the development environment, migrations will be applied automatically.)
+* Open your browser at http://localhost:5000/ to test the api
+
+To run the angular client directly:
+* Verify the api instance is running. (If you change the apu url, then change it on the environment settings)
+* Run npm start at the cli.
+* Open your browser at http://localhost:4200/ to test the angular client.
+

@@ -2,6 +2,7 @@
 
 API example using best practices:
 * DDD (layers, services, repositories, entities, value objects, domain events, event bus, domain events subscribers)
+* CQRS
 * Unit of work
 * TDD at all levels (Unit tests, integration tests and acceptance tests)
 * Logging

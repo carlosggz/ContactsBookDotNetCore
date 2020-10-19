@@ -1,6 +1,10 @@
 ﻿using ContactsBook.Api.Controllers;
 using ContactsBook.Application.Services;
+using ContactsBook.Common.Events;
 using ContactsBook.Common.Logger;
+using ContactsBook.Common.Repositories;
+using ContactsBook.Domain.Contacts;
+using MediatR;
 using Moq;
 using NUnit.Framework;
 
@@ -8,16 +12,22 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
 {
     public abstract class BaseContactController
     {
-        protected Mock<IContactsAppService> _contactsService;
-        protected Mock<IAppLogger> _logger;
-        protected ContactsController _controller;
+        protected Mock<IMediator> mediator;
+        protected Mock<IAppLogger> logger;
+        protected Mock<IUnitOfWork> uow;
+        protected Mock<IEventBus> eventBus;
+        protected Mock<IContactsRepository> repository;
+        protected ContactsController controller;
 
         [SetUp]
         public void Init()
         {
-            _logger = new Mock<IAppLogger>();
-            _contactsService = new Mock<IContactsAppService>();
-            _controller = new ContactsController(_logger.Object, _contactsService.Object);
+            logger = new Mock<IAppLogger>();
+            mediator = new Mock<IMediator>();
+            uow = new Mock<IUnitOfWork>();
+            eventBus = new Mock<IEventBus>();
+            repository = new Mock<IContactsRepository>();
+            controller = new ContactsController(logger.Object, mediator.Object);
         }
     }
 }

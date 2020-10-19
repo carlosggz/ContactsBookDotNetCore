@@ -1,10 +1,14 @@
 ﻿using ContactsBook.Api.Models;
 using ContactsBook.Application.Dtos;
+using ContactsBook.Application.Services.GetContact;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Tests.Common.ObjectMothers;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ContactsBook.Api.UnitTests.ContactsControllerTests
 {
@@ -15,9 +19,9 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
         public void GetContactCallsCollaborators()
         {
             var model = ContactsModelObjectMother.Random();
-            _contactsService.Setup(x => x.GetContact(model.Id)).Returns(model);
+            mediator.Setup(x => x.Send(It.Is<GetContactQuery>(x => x.Id == model.Id), It.IsAny<CancellationToken>())).Returns(Task.FromResult(model));
 
-            var returned = _controller.Get(model.Id);
+            var returned = controller.Get(model.Id).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -43,52 +47,52 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             foreach (var phone in apiResult.PhoneNumbers)
                 Assert.IsTrue(model.PhoneNumbers.Any(x => x.PhoneType == phone.PhoneType && x.PhoneNumber == phone.PhoneNumber));
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
 
         [Test]
         public void NullIdThrowsException()
         {
-            _contactsService.Setup(x => x.GetContact(null)).Throws(new InvalidEntityException("Invalid entity"));
+            mediator.Setup(x => x.Send(It.Is<GetContactQuery>(x => x.Id == null), It.IsAny<CancellationToken>())).Throws(new InvalidEntityException("Invalid entity"));
 
-            var returned = _controller.Get(null);
+            var returned = controller.Get(null).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
             Assert.IsTrue(returned.Result is BadRequestResult);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
         public void InvalidIdThrowsException()
         {
             var id = Faker.Lorem.GetFirstWord();
-            _contactsService.Setup(x => x.GetContact(id)).Throws(new InvalidEntityException("Invalid entity"));
+            mediator.Setup(x => x.Send(It.Is<GetContactQuery>(x => x.Id == id), It.IsAny<CancellationToken>())).Throws(new InvalidEntityException("Invalid entity"));
 
-            var returned = _controller.Get(id);
+            var returned = controller.Get(id).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
             Assert.IsTrue(returned.Result is BadRequestResult);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
         public void InvalidContactThrowsException()
         {
             var id = ContactEntityObjectMother.Random().Id.Value;
-            _contactsService.Setup(x => x.GetContact(id)).Throws(new EntityNotFound("Invalid entity"));
+            mediator.Setup(x => x.Send(It.Is<GetContactQuery>(x => x .Id == id), It.IsAny<CancellationToken>())).Throws(new EntityNotFound("Invalid entity"));
 
-            var returned = _controller.Get(id);
+            var returned = controller.Get(id).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
             Assert.IsTrue(returned.Result is NotFoundResult);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
     }
 }

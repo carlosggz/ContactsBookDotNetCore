@@ -8,17 +8,15 @@ using System.Text;
 
 namespace ContactsBook.Infrastructure.Repositories.EF
 {    
-    public class EFUnitOfWork : IContactsBookUnitOfWork
+    public class EFUnitOfWork : IUnitOfWork
     {
         private readonly ContactsBookContext _context;
-        private IContactsRepository _contactsRepository = null;
 
         public EFUnitOfWork(ContactsBookContext context)
         {
             _context = context;
         }
 
-        public IContactsRepository ContactsRepository => _contactsRepository ?? (_contactsRepository = new EF.ContactsRepository(_context));
         public void CommitChanges()
         {
             _context.SaveChanges();

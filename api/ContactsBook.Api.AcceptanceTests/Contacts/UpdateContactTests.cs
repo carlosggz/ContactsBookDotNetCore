@@ -26,9 +26,9 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         {
             var entity = ContactEntityObjectMother.Random();
 
-            _uow.StartChanges();
-            _uow.ContactsRepository.Add(entity);
-            _uow.CommitChanges();
+            uow.StartChanges();
+            repository.Add(entity);
+            uow.CommitChanges();
 
             var model = ContactsModelObjectMother.FromEntity(entity);
 
@@ -42,9 +42,9 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
             var secondContact = ContactEntityObjectMother.Random();
             secondContact.Name = firstContact.Name;
 
-            _uow.StartChanges();
-            _uow.ContactsRepository.Add(firstContact);
-            _uow.CommitChanges();
+            uow.StartChanges();
+            repository.Add(firstContact);
+            uow.CommitChanges();
 
             var model = ContactsModelObjectMother.FromEntity(secondContact);
 

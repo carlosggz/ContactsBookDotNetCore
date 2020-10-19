@@ -1,4 +1,5 @@
-﻿using ContactsBook.Common.Exceptions;
+﻿using ContactsBook.Application.Services.GetContact;
+using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Common;
 using ContactsBook.Tests.Common.ObjectMothers;
 using NUnit.Framework;
@@ -16,9 +17,12 @@ namespace ContactsBook.Tests.Application.ContactService
         public void ExistingContactReturnsEntity()
         {
             var contact = ContactEntityObjectMother.Random();
-            _repo.Setup(x => x.GetById(contact.Id)).Returns(contact);
+            repo.Setup(x => x.GetById(contact.Id)).Returns(contact);
 
-            var model = _contactsService.GetContact(contact.Id.Value);
+            var cmd = new GetContactQuery(contact.Id.Value);
+            var handler = new GetContactQueryHandler(uow.Object, eventBus.Object, repo.Object);
+
+            var model = handler.Handle(cmd, new System.Threading.CancellationToken()).Result;
 
             Assert.IsNotNull(model);
             Assert.AreEqual(contact.Id.Value, model.Id);
@@ -33,21 +37,25 @@ namespace ContactsBook.Tests.Application.ContactService
             foreach (var phone in contact.PhoneNumbers)
                 Assert.IsTrue(model.PhoneNumbers.Any(x => x.PhoneType == phone.PhoneType && x.PhoneNumber == phone.PhoneNumber));
 
-            _repo.VerifyAll();
+            repo.VerifyAll();
         }
 
         [Test]
         public void InvalidIdThrowsException()
-        {
-            Assert.Throws<DomainException>(() => _contactsService.GetContact(null));
-            Assert.Throws<DomainException>(() => _contactsService.GetContact(string.Empty));
-            Assert.Throws<DomainException>(() => _contactsService.GetContact("123"));
+        { 
+            var handler = new GetContactQueryHandler(uow.Object, eventBus.Object, repo.Object);
+
+            Assert.Throws<DomainException>(() => handler.Handle(new GetContactQuery(null), new System.Threading.CancellationToken()));
+            Assert.Throws<DomainException>(() => handler.Handle(new GetContactQuery(string.Empty), new System.Threading.CancellationToken()));
+            Assert.Throws<DomainException>(() => handler.Handle(new GetContactQuery("123"), new System.Threading.CancellationToken()));
         }
 
         [Test]
         public void InvalidContactThrowsException()
         {
-            Assert.Throws<EntityNotFound>(() => _contactsService.GetContact(new IdValueObject().Value));
+            var handler = new GetContactQueryHandler(uow.Object, eventBus.Object, repo.Object);
+
+            Assert.Throws<EntityNotFound>(() => handler.Handle(new GetContactQuery(new IdValueObject().Value), new System.Threading.CancellationToken()));
         }
     }
 }

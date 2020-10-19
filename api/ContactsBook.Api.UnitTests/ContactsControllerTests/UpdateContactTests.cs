@@ -1,9 +1,11 @@
 ﻿using ContactsBook.Api.Models;
 using ContactsBook.Application.Dtos;
 using ContactsBook.Application.Exceptions;
+using ContactsBook.Application.Services.UpdateContact;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Common;
 using ContactsBook.Tests.Common.ObjectMothers;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -11,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ContactsBook.Api.UnitTests.ContactsControllerTests
 {
@@ -21,9 +25,9 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
         public void UpdateContactCallsCollaborators()
         {
             var model = ContactsModelObjectMother.Random();
-            _contactsService.Setup(x => x.UpdateContact(model));
+            mediator.Setup(x => x.Send(It.IsAny<UpdateContactCommand>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(Unit.Value));
 
-            var returned = _controller.Update(model);
+            var returned = controller.Update(model).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -39,15 +43,15 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.IsNull(apiResult.Errors);
             Assert.IsTrue(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
         public void NullModelThrowsException()
         {
-            _contactsService.Setup(x => x.UpdateContact(null)).Throws(new InvalidEntityException("Invalid entity"));
+            mediator.Setup(x => x.Send(It.Is<UpdateContactCommand>(x => x.Model == null), It.IsAny<CancellationToken>())).Throws(new InvalidEntityException("Invalid entity"));
 
-            var returned = _controller.Update(null);
+            var returned = controller.Update(null).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -64,16 +68,16 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.AreEqual(1, apiResult.Errors.Count());
             Assert.IsFalse(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
         public void InvalidModelThrowsException()
         {
             var model = ContactsModelObjectMother.Random();
-            _contactsService.Setup(x => x.UpdateContact(model)).Throws(new InvalidEntityException("Invalid entity"));
+            mediator.Setup(x => x.Send(It.IsAny<UpdateContactCommand>(), It.IsAny<CancellationToken>())).Throws(new InvalidEntityException("Invalid entity"));
 
-            var returned = _controller.Update(model);
+            var returned = controller.Update(model).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -90,7 +94,7 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.AreEqual(1, apiResult.Errors.Count());
             Assert.IsFalse(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
@@ -103,9 +107,9 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             for (var i = 0; i < maxErrors; i++)
                 errors.Add(new ValidationResult(Faker.Lorem.Sentence()));
 
-            _contactsService.Setup(x => x.UpdateContact(model)).Throws(new EntityValidationException(errors));
+            mediator.Setup(x => x.Send(It.IsAny<UpdateContactCommand>(), It.IsAny<CancellationToken>())).Throws(new EntityValidationException(errors));
 
-            var returned = _controller.Update(model);
+            var returned = controller.Update(model).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -125,7 +129,7 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             foreach (var error in apiResult.Errors)
                 Assert.IsTrue(errors.Any(x => x.ErrorMessage == error));
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
@@ -138,9 +142,9 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             for (var i = 0; i < maxErrors; i++)
                 errors.Add(new ValidationResult(Faker.Lorem.Sentence()));
 
-            _contactsService.Setup(x => x.UpdateContact(model)).Throws(new EntityNotFound("Invalid contact"));
+            mediator.Setup(x => x.Send(It.IsAny<UpdateContactCommand>(), It.IsAny<CancellationToken>())).Throws(new EntityNotFound("Invalid contact"));
 
-            var returned = _controller.Update(model);
+            var returned = controller.Update(model).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -157,7 +161,7 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.AreEqual(1, apiResult.Errors.Count());
             Assert.IsFalse(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
     }
     }

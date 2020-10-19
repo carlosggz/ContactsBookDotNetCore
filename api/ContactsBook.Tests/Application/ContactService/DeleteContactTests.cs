@@ -1,5 +1,6 @@
 ﻿using ContactsBook.Application.Exceptions;
 using ContactsBook.Application.Services;
+using ContactsBook.Application.Services.DeleteContact;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Domain.Common;
 using ContactsBook.Domain.Contacts;
@@ -18,40 +19,48 @@ namespace ContactsBook.Tests.Application.ContactService
         {
             var contact = ContactEntityObjectMother.Random();
 
-            _repo.Setup(x => x.GetById(contact.Id)).Returns(contact);
-            _repo.Setup(x => x.Delete(It.Is<IdValueObject>(p => p == contact.Id)));
+            repo.Setup(x => x.GetById(contact.Id)).Returns(contact);
+            repo.Setup(x => x.Delete(It.Is<IdValueObject>(p => p == contact.Id)));
 
-            _uof.Setup(x => x.StartChanges());
-            _uof.Setup(x => x.CommitChanges());
+            uow.Setup(x => x.StartChanges());
+            uow.Setup(x => x.CommitChanges());
 
-            _eventBus.Setup(
+            eventBus.Setup(
                 x => x.Record(It.Is<ContactDeletedDomainEvent>(
                     p => p.FirstName == contact.Name.FirstName && p.LastName == contact.Name.LastName && p.AggregateRootId == contact.Id.Value)));
-            _eventBus.Setup(x => x.PublishAsync()).Returns(Task.Delay(500));
+            eventBus.Setup(x => x.PublishAsync()).Returns(Task.Delay(500));
 
-            _contactsService.DeleteContact(contact.Id.Value);
+            var cmd = new DeleteContactCommand(contact.Id.Value);
+            var handler = new DeleteContactCommandHandler(uow.Object, eventBus.Object, repo.Object);
 
-            _repo.VerifyAll();
-            _uof.VerifyAll();
-            _eventBus.VerifyAll();
+            var x = handler.Handle(cmd, new System.Threading.CancellationToken()).Result;
+
+
+            repo.VerifyAll();
+            uow.VerifyAll();
+            eventBus.VerifyAll();
         }
 
         [Test]
         public void DeleteWithInvalidIdThrowException()
         {
-            Assert.Throws<InvalidEntityException>(() => _contactsService.DeleteContact(null));
-            Assert.Throws<InvalidEntityException>(() => _contactsService.DeleteContact(""));
-            Assert.Throws<DomainException>(() => _contactsService.DeleteContact("abc"));
+            var handler = new DeleteContactCommandHandler(uow.Object, eventBus.Object, repo.Object);
+
+            Assert.Throws<InvalidEntityException>(() => handler.Handle(new DeleteContactCommand(null), new System.Threading.CancellationToken()));
+            Assert.Throws<InvalidEntityException>(() => handler.Handle(new DeleteContactCommand(string.Empty), new System.Threading.CancellationToken()));
+            Assert.Throws<DomainException>(() => handler.Handle(new DeleteContactCommand("abc"), new System.Threading.CancellationToken()));
         }
 
         [Test]
         public void DeleteWithInvalidContactThrowException()
         {
             var id = new IdValueObject();
-            _repo.Setup(x => x.GetById(It.Is<IdValueObject>(p => p == id))).Returns<ContactEntity>(null);
+            repo.Setup(x => x.GetById(It.Is<IdValueObject>(p => p == id))).Returns<ContactEntity>(null);
+            var cmd = new DeleteContactCommand(id.Value);
+            var handler = new DeleteContactCommandHandler(uow.Object, eventBus.Object, repo.Object);
 
-            Assert.Throws<EntityNotFound>(() => _contactsService.DeleteContact(id.Value));
-            _repo.VerifyAll();
+            Assert.Throws<EntityNotFound>(() => handler.Handle(cmd, new System.Threading.CancellationToken()));
+            repo.VerifyAll();
         }
     }
 }

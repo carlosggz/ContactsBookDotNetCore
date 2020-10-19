@@ -1,9 +1,12 @@
 ﻿using ContactsBook.Api.Models;
+using ContactsBook.Application.Services.DeleteContact;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Tests.Common.ObjectMothers;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
 using System.Linq;
+using System.Threading;
 
 namespace ContactsBook.Api.UnitTests.ContactsControllerTests
 {
@@ -14,9 +17,9 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
         public void DeleteContactCallsCollaborators()
         {
             var model = ContactsModelObjectMother.Random();
-            _contactsService.Setup(x => x.DeleteContact(model.Id));
+            mediator.Setup(x => x.Send(It.Is<DeleteContactCommand>(x => x.Id == model.Id), It.IsAny<CancellationToken>()));
 
-            var returned = _controller.Delete(model.Id);
+            var returned = controller.Delete(model.Id).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -32,16 +35,16 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.IsNull(apiResult.Errors);
             Assert.IsTrue(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
 
         [Test]
         public void NullModelThrowsException()
         {
-            _contactsService.Setup(x => x.DeleteContact(null)).Throws(new InvalidEntityException("Invalid entity"));
-
-            var returned = _controller.Delete(null);
+            mediator.Setup(x => x.Send(It.Is<DeleteContactCommand>(x => x.Id == null), It.IsAny<CancellationToken>())).Throws(new InvalidEntityException("Invalid entity"));
+            
+            var returned = controller.Delete(null).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -58,16 +61,16 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.AreEqual(1, apiResult.Errors.Count());
             Assert.IsFalse(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
         public void InvalidIdThrowsException()
         {
             var id = Faker.Lorem.GetFirstWord();
-            _contactsService.Setup(x => x.DeleteContact(id)).Throws(new InvalidEntityException("Invalid entity"));
+            mediator.Setup(x => x.Send(It.Is<DeleteContactCommand>(x => x.Id == id), It.IsAny<CancellationToken>())).Throws(new InvalidEntityException("Invalid entity"));
 
-            var returned = _controller.Delete(id);
+            var returned = controller.Delete(id).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -84,16 +87,16 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.AreEqual(1, apiResult.Errors.Count());
             Assert.IsFalse(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
         public void InvalidContactThrowsException()
         {
             var id = ContactEntityObjectMother.Random().Id.Value;
-            _contactsService.Setup(x => x.DeleteContact(id)).Throws(new EntityNotFound("Invalid entity"));
+            mediator.Setup(x => x.Send(It.Is<DeleteContactCommand>(x => x.Id == id), It.IsAny<CancellationToken>())).Throws(new EntityNotFound("Invalid entity"));
 
-            var returned = _controller.Delete(id);
+            var returned = controller.Delete(id).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -110,7 +113,7 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             Assert.AreEqual(1, apiResult.Errors.Count());
             Assert.IsFalse(apiResult.Success);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
     }
 }

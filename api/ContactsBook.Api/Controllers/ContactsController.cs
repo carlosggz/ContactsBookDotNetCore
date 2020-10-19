@@ -6,12 +6,18 @@ using ContactsBook.Api.Models;
 using ContactsBook.Application.Dtos;
 using ContactsBook.Application.Exceptions;
 using ContactsBook.Application.Services;
+using ContactsBook.Application.Services.AddContact;
+using ContactsBook.Application.Services.DeleteContact;
+using ContactsBook.Application.Services.GetContact;
+using ContactsBook.Application.Services.GetContacts;
+using ContactsBook.Application.Services.UpdateContact;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Logger;
 using ContactsBook.Common.Mailer;
 using ContactsBook.Common.Repositories;
 using ContactsBook.Domain.Common;
 using ContactsBook.Domain.Contacts;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
@@ -21,12 +27,12 @@ namespace ContactsBook.Api.Controllers
     public class ContactsController : Controller
     {
         private readonly IAppLogger _logger;
-        private readonly IContactsAppService _service;
+        private readonly IMediator _mediator;
 
-        public ContactsController(IAppLogger logger, IContactsAppService service)
+        public ContactsController(IAppLogger logger, IMediator mediator)
         {
             _logger = logger;
-            _service = service;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -35,7 +41,7 @@ namespace ContactsBook.Api.Controllers
         /// <param name="model">Contact details</param>
         /// <returns>Id of the new contact</returns>
         [HttpPost]
-        public ActionResult<ApiContactResultModel> Add([FromBody] ContactsModel model)
+        public async Task<ActionResult<ApiContactResultModel>> Add([FromBody] ContactsModel model)
         {
             var result = new ApiContactResultModel();
             var contactId = new IdValueObject().Value;
@@ -43,7 +49,7 @@ namespace ContactsBook.Api.Controllers
             try
             {
                 model.Id = contactId;
-                _service.AddContact(model);
+                await _mediator.Send(new AddContactCommand(model));
                 result.Success = true;
                 result.ContactId = contactId;
                 return Ok(result);
@@ -72,13 +78,13 @@ namespace ContactsBook.Api.Controllers
         /// <param name="model">Contact details</param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult<ApiContactResultModel> Update([FromBody] ContactsModel model)
+        public async Task<ActionResult<ApiContactResultModel>> Update([FromBody] ContactsModel model)
         {
             var result = new ApiContactResultModel();
 
             try
             {
-                _service.UpdateContact(model);
+                await _mediator.Send(new UpdateContactCommand(model));
                 result.Success = true;
                 result.ContactId = model.Id;
                 return Ok(result);
@@ -113,13 +119,13 @@ namespace ContactsBook.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult<ApiContactResultModel> Delete([FromRoute] string id)
+        public async Task<ActionResult<ApiContactResultModel>> Delete([FromRoute] string id)
         {
             var result = new ApiContactResultModel();
 
             try
             {
-                _service.DeleteContact(id);
+                await _mediator.Send(new DeleteContactCommand(id));
                 result.Success = true;
                 result.ContactId = id;
                 return Ok(result);
@@ -149,11 +155,12 @@ namespace ContactsBook.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<ContactsModel> Get([FromRoute] string id)
+        public async Task<ActionResult<ContactsModel>> Get([FromRoute] string id)
         {
             try
             {
-                return Ok(_service.GetContact(id));
+                var contact = await _mediator.Send(new GetContactQuery(id));
+                return Ok(contact);
             }
             catch (InvalidEntityException)
             {
@@ -176,11 +183,11 @@ namespace ContactsBook.Api.Controllers
         /// <param name="criteria">Criteria</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<SearchResults<ContactDto>> Search([FromBody] ContactsSearchCriteriaModel criteria)
+        public async Task<ActionResult<SearchResults<ContactDto>>> Search([FromBody] ContactsSearchCriteriaModel criteria)
         {
             try
             {
-                var results = _service.GetContactsByName(criteria.PageNumber, criteria.PageSize, criteria.Text);
+                var results = await _mediator.Send(new GetContactsQuery(criteria.PageNumber, criteria.PageSize, criteria.Text));
                 return Ok(results);
             }
             catch (InvalidParametersException)

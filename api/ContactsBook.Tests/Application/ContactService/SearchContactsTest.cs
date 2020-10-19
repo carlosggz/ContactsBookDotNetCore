@@ -1,4 +1,5 @@
-﻿using ContactsBook.Common.Exceptions;
+﻿using ContactsBook.Application.Services.GetContacts;
+using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Repositories;
 using ContactsBook.Domain.Contacts;
 using ContactsBook.Tests.Common.ObjectMothers;
@@ -36,11 +37,14 @@ namespace ContactsBook.Tests.Application.ContactService
                     }
             );
 
-            _repo.Setup(
+            repo.Setup(
                 x => x.SearchByCriteria(It.Is<ContactSearchCriteria>(p => p.PageNumber == page && p.PageSize == size && p.Text == text)))
                 .Returns(toReturn);
 
-            var result = _contactsService.GetContactsByName(page, size, text);
+            var cmd = new GetContactsQuery(page, size, text);
+            var handler = new GetContactsQueryHandler(uow.Object, eventBus.Object, repo.Object);
+
+            var result = handler.Handle(cmd, new System.Threading.CancellationToken()).Result;
 
             Assert.IsNotNull(result);
             Assert.AreEqual(toReturn.Total, result.Total);
@@ -55,9 +59,11 @@ namespace ContactsBook.Tests.Application.ContactService
         [Test]
         public void SearchWithInvalidParametersThrowsException()
         {
-            Assert.Throws<InvalidParametersException>(() => _contactsService.GetContactsByName(0, 1, string.Empty));
-            Assert.Throws<InvalidParametersException>(() => _contactsService.GetContactsByName(1, 0, string.Empty));
-            Assert.DoesNotThrow(() => _contactsService.GetContactsByName(1, 1, string.Empty));
+            var handler = new GetContactsQueryHandler(uow.Object, eventBus.Object, repo.Object);
+
+            Assert.Throws<InvalidParametersException>(() => handler.Handle(new GetContactsQuery(0, 1, string.Empty), new System.Threading.CancellationToken()));
+            Assert.Throws<InvalidParametersException>(() => handler.Handle(new GetContactsQuery(1, 0, string.Empty), new System.Threading.CancellationToken()));
+            Assert.DoesNotThrow(() => handler.Handle(new GetContactsQuery(1, 1, string.Empty), new System.Threading.CancellationToken()));
         }
     }
 }

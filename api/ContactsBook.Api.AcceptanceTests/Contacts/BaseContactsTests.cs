@@ -1,4 +1,5 @@
-﻿using ContactsBook.Domain;
+﻿using ContactsBook.Common.Repositories;
+using ContactsBook.Domain;
 using ContactsBook.Domain.Contacts;
 using ContactsBook.Tests.Common.ObjectMothers;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +20,8 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         protected const string ContactsApiUrl = "/api/Contacts";
         protected readonly TestServer _server;
         protected readonly HttpClient _client;
-        protected IContactsBookUnitOfWork _uow;
+        protected IUnitOfWork uow;
+        protected IContactsRepository repository;
 
         public BaseContactsTests()
         {
@@ -40,7 +42,8 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         [SetUp]
         public void Setup()
         {
-            _uow = _server.Host.Services.GetService<IContactsBookUnitOfWork>();
+            uow = _server.Host.Services.GetService<IUnitOfWork>();
+            repository = _server.Host.Services.GetService<IContactsRepository>();
         }
     }
 }

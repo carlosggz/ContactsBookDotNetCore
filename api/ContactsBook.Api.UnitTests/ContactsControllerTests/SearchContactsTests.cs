@@ -1,5 +1,6 @@
 ﻿using ContactsBook.Api.Models;
 using ContactsBook.Application.Dtos;
+using ContactsBook.Application.Services.GetContacts;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Repositories;
 using ContactsBook.Domain.Contacts;
@@ -10,6 +11,8 @@ using NLog.LayoutRenderers.Wrappers;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ContactsBook.Api.UnitTests.ContactsControllerTests
 {
@@ -31,10 +34,9 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             };
 
             var result = new SearchResults<ContactDto>(1, new List<ContactDto>() { dto });
+            mediator.Setup(x => x.Send(It.IsAny<GetContactsQuery>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(result));
 
-            _contactsService.Setup(x => x.GetContactsByName(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).Returns(result);
-
-            var returned = _controller.Search(new ContactsSearchCriteriaModel());
+            var returned = controller.Search(new ContactsSearchCriteriaModel()).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -53,14 +55,14 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
             foreach (var contactDto in apiResult.Results)
                 Assert.IsTrue(result.Results.Any(x => x.ContactId == contactDto.ContactId));
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
 
         [Test]
         public void NullParametersThrowsException()
         {
-            var returned = _controller.Search(null);
+            var returned = controller.Search(null).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
@@ -71,30 +73,34 @@ namespace ContactsBook.Api.UnitTests.ContactsControllerTests
         public void InvalidPageNumberParameterThrowsException()
         {
             var criteria = new ContactsSearchCriteriaModel() { PageNumber = 0, PageSize = 1 };
-            _contactsService.Setup(x => x.GetContactsByName(criteria.PageNumber, criteria.PageSize, criteria.Text)).Throws(new InvalidParametersException("Invalid search parameters"));
-            
-            var returned = _controller.Search(criteria);
+            mediator
+                .Setup(x => x.Send(It.Is<GetContactsQuery>(x => x.Page == criteria.PageNumber && x.Size == criteria.PageSize && x.Text == criteria.Text), It.IsAny<CancellationToken>()))
+                .Throws(new InvalidParametersException("Invalid search parameters"));
+
+            var returned = controller.Search(criteria).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
             Assert.IsTrue(returned.Result is BadRequestResult);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
         [Test]
         public void InvalidPageSizeParameterThrowsException()
         {
             var criteria = new ContactsSearchCriteriaModel() { PageNumber = 1, PageSize = 0 };
-            _contactsService.Setup(x => x.GetContactsByName(criteria.PageNumber, criteria.PageSize, criteria.Text)).Throws(new InvalidParametersException("Invalid search parameters"));
+            mediator
+                .Setup(x => x.Send(It.Is<GetContactsQuery>(x => x.Page == criteria.PageNumber && x.Size == criteria.PageSize && x.Text == criteria.Text), It.IsAny<CancellationToken>()))
+                .Throws(new InvalidParametersException("Invalid search parameters"));
 
-            var returned = _controller.Search(criteria);
+            var returned = controller.Search(criteria).Result;
 
             Assert.IsNotNull(returned);
             Assert.IsNotNull(returned.Result);
             Assert.IsTrue(returned.Result is BadRequestResult);
 
-            _contactsService.VerifyAll();
+            mediator.VerifyAll();
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using ContactsBook.Application.Dtos;
 using ContactsBook.Application.Exceptions;
 using ContactsBook.Application.Services;
+using ContactsBook.Application.Services.AddContact;
 using ContactsBook.Common.Events;
 using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Repositories;
@@ -26,25 +27,31 @@ namespace ContactsBook.Tests.Application.ContactService
         {
             var model = ContactsModelObjectMother.Random();
 
-            _repo.Setup(x => x.Add(It.IsAny<ContactEntity>()));
+            repo.Setup(x => x.Add(It.IsAny<ContactEntity>()));
 
-            _uof.Setup(x => x.StartChanges());
-            _uof.Setup(x => x.CommitChanges());
+            uow.Setup(x => x.StartChanges());
+            uow.Setup(x => x.CommitChanges());
 
-            _eventBus.Setup(x => x.Record(It.Is<ContactAddedDomainEvent>(p => p.FirstName == model.FirstName && p.LastName == model.LastName && p.AggregateRootId == model.Id)));
-            _eventBus.Setup(x => x.PublishAsync()).Returns(Task.Delay(500));
+            eventBus.Setup(x => x.Record(It.Is<ContactAddedDomainEvent>(p => p.FirstName == model.FirstName && p.LastName == model.LastName && p.AggregateRootId == model.Id)));
+            eventBus.Setup(x => x.PublishAsync()).Returns(Task.Delay(500));
 
-            _contactsService.AddContact(model);
+            var cmd = new AddContactCommand(model);
+            var handler = new AddContactCommandHandler(uow.Object, eventBus.Object, repo.Object);
 
-            _repo.VerifyAll();
-            _uof.VerifyAll();
-            _eventBus.VerifyAll();
+            var x = handler.Handle(cmd, new System.Threading.CancellationToken()).Result;
+
+            repo.VerifyAll();
+            uow.VerifyAll();
+            eventBus.VerifyAll();
         }
 
         [Test]
         public void AddContactWithNullValuesThrowsException()
         {
-            Assert.Throws<InvalidEntityException>(() => _contactsService.AddContact(null));
+            var cmd = new AddContactCommand(null);
+            var handler = new AddContactCommandHandler(uow.Object, eventBus.Object, repo.Object);
+
+            Assert.Throws<InvalidEntityException>(() => handler.Handle(cmd, new System.Threading.CancellationToken()));
         }
 
         [Test]
@@ -52,8 +59,10 @@ namespace ContactsBook.Tests.Application.ContactService
         {
             var model = ContactsModelObjectMother.Random();
             model.FirstName = null;
+            var cmd = new AddContactCommand(model);
+            var handler = new AddContactCommandHandler(uow.Object, eventBus.Object, repo.Object);
 
-            Assert.Throws<EntityValidationException>(() => _contactsService.AddContact(model));
+            Assert.Throws<EntityValidationException>(() => handler.Handle(cmd, new System.Threading.CancellationToken()));
         }
 
         [Test]
@@ -63,11 +72,14 @@ namespace ContactsBook.Tests.Application.ContactService
             var duplicated = ContactEntityObjectMother.Random();
             duplicated.Name = original.Name;
 
-            _repo.Setup(x => x.ExistsContactWithName(duplicated.Name, null)).Returns(true);
+            repo.Setup(x => x.ExistsContactWithName(duplicated.Name, null)).Returns(true);
 
             var model = ContactsModelObjectMother.FromEntity(duplicated);
 
-            Assert.Throws<DomainException>(() => _contactsService.AddContact(model));
+            var cmd = new AddContactCommand(model);
+            var handler = new AddContactCommandHandler(uow.Object, eventBus.Object, repo.Object);
+
+            Assert.Throws<DomainException>(() => handler.Handle(cmd, new System.Threading.CancellationToken()));
         }
     }
 }

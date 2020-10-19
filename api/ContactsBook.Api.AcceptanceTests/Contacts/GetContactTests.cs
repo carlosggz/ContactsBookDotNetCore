@@ -30,9 +30,9 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         public void ValidContactReturnsOk()
         {
             var entity = ContactEntityObjectMother.Random();
-            _uow.StartChanges();
-            _uow.ContactsRepository.Add(entity);
-            _uow.CommitChanges();
+            uow.StartChanges();
+            repository.Add(entity);
+            uow.CommitChanges();
 
             VerifyCall("/" + entity.Id.Value, System.Net.HttpStatusCode.OK);
         }

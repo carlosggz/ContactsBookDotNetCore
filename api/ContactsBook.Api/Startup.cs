@@ -6,14 +6,18 @@ using System.Reflection;
 using System.Threading.Tasks;
 using ContactsBook.Api.Helpers;
 using ContactsBook.Application.Services;
+using ContactsBook.Application.Services.AddContact;
 using ContactsBook.Common.Events;
 using ContactsBook.Common.Logger;
 using ContactsBook.Common.Mailer;
+using ContactsBook.Common.Repositories;
 using ContactsBook.Domain;
+using ContactsBook.Domain.Contacts;
 using ContactsBook.Infrastructure.EventsBus;
 using ContactsBook.Infrastructure.Logger;
 using ContactsBook.Infrastructure.Mailer;
 using ContactsBook.Infrastructure.Repositories.EF;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +45,8 @@ namespace ContactsBook.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR(typeof(AddContactCommand));
+
             services.AddControllers();
             
             services.AddSwaggerGen(options => {
@@ -56,11 +62,11 @@ namespace ContactsBook.Api
             var section = Configuration.GetSection("SmtpSettings");
             services.Configure<SmtpConfiguration>(section);
             
-            services.AddScoped<IContactsBookUnitOfWork, EFUnitOfWork>();
+            services.AddScoped<IUnitOfWork, EFUnitOfWork>();
             services.AddScoped<IEventBus>(x => new EventBus(ReflectionHelpers.EventsSubscribers));
             services.AddScoped<IAppLogger>(x => new NLogLogger(Configuration.GetValue<string>("App:LoggerName")));
             services.AddScoped<IMailer>(x => new SmtpMailer(section.Get<SmtpConfiguration>()));
-            services.AddScoped<IContactsAppService, ContactsAppService>();
+            services.AddScoped<IContactsRepository, ContactsRepository>();
 
             // Configure CORS for angular2 UI
             services.AddCors(
@@ -83,7 +89,7 @@ namespace ContactsBook.Api
                         options.UseInMemoryDatabase(databaseName: "Test");
                     else 
                         options.UseSqlServer(Configuration["App:ConnectionString"]);
-                  });
+                  }, ServiceLifetime.Scoped);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -36,9 +36,9 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         {
             var entity = ContactEntityObjectMother.Random();            
 
-            _uow.StartChanges();
-            _uow.ContactsRepository.Add(entity);
-            _uow.CommitChanges();
+            uow.StartChanges();
+            repository.Add(entity);
+            uow.CommitChanges();
 
             var model = ContactsModelObjectMother.FromEntity(entity);
             model.Id = null;

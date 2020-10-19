@@ -1,25 +1,22 @@
 ﻿using ContactsBook.Application.Dtos;
-using ContactsBook.Application.Exceptions;
 using ContactsBook.Common.Events;
-using ContactsBook.Common.Exceptions;
 using ContactsBook.Common.Repositories;
-using ContactsBook.Domain;
 using System;
-using System.Collections.Generic;
+using ContactsBook.Common.Exceptions;
+using ContactsBook.Application.Exceptions;
 using System.Linq;
-using System.Text;
 
 namespace ContactsBook.Application.Services
 {
-    public class BaseAppService
+    public abstract class BaseHandler
     {
-        public BaseAppService(IContactsBookUnitOfWork unitOfWork, IEventBus eventBus)
+        public BaseHandler(IUnitOfWork unitOfWork, IEventBus eventBus)
         {
             UnitOfWork = unitOfWork;
             EventBus = eventBus;
         }
 
-        protected IContactsBookUnitOfWork UnitOfWork { get; private set; }
+        protected IUnitOfWork UnitOfWork { get; private set; }
         protected IEventBus EventBus { get; private set; }
 
 

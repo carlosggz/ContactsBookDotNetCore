@@ -5,16 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Analytics\**" />
     <Compile Remove="Events\**" />
     <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Analytics\**" />
     <EmbeddedResource Remove="Events\**" />
     <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Analytics\**" />
     <None Remove="Events\**" />
     <None Remove="Exceptions\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Analytics\" />
   </ItemGroup>
 
   <ItemGroup>

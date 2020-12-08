@@ -7,11 +7,9 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
     [TestFixture]
     public class DeleteContactTests : BaseContactsTests
     {
-        private const string Url = ContactsApiUrl + "/Delete";
-
         private void VerifyCall(string url, System.Net.HttpStatusCode expectedCode)
         {
-            var response = _client.DeleteAsync(Url + url).Result;
+            var response = _client.DeleteAsync(ContactsApiUrl + url).Result;
 
             Assert.IsTrue(response.StatusCode == expectedCode);
         }
@@ -44,7 +42,7 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         [Test]
         public void NullIdReturnsNotfound()
         {
-            VerifyCall(string.Empty, System.Net.HttpStatusCode.NotFound);
+            VerifyCall(string.Empty, System.Net.HttpStatusCode.MethodNotAllowed);
         }
     }
 }

@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace ContactsBook.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class ContactsController : Controller
     {
         private readonly IAppLogger _logger;
@@ -183,6 +183,7 @@ namespace ContactsBook.Api.Controllers
         /// <param name="criteria">Criteria</param>
         /// <returns></returns>
         [HttpPost]
+        [Route("search")]
         public async Task<ActionResult<SearchResults<ContactDto>>> Search([FromBody] ContactsSearchCriteriaModel criteria)
         {
             try

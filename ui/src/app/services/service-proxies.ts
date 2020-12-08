@@ -33,7 +33,7 @@ export class ContactsServiceProxy {
      * @return Success
      */
     add(body: ContactsModel | undefined): Observable<ApiContactResultModel> {
-        let url_ = this.baseUrl + "/api/Contacts/Add";
+        let url_ = this.baseUrl + "/api/Contacts";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -90,7 +90,7 @@ export class ContactsServiceProxy {
      * @return Success
      */
     update(body: ContactsModel | undefined): Observable<ApiContactResultModel> {
-        let url_ = this.baseUrl + "/api/Contacts/Update";
+        let url_ = this.baseUrl + "/api/Contacts";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -147,7 +147,7 @@ export class ContactsServiceProxy {
      * @return Success
      */
     delete(id: string | null): Observable<ApiContactResultModel> {
-        let url_ = this.baseUrl + "/api/Contacts/Delete/{id}";
+        let url_ = this.baseUrl + "/api/Contacts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -203,7 +203,7 @@ export class ContactsServiceProxy {
      * @return Success
      */
     get(id: string | null): Observable<ContactsModel> {
-        let url_ = this.baseUrl + "/api/Contacts/Get/{id}";
+        let url_ = this.baseUrl + "/api/Contacts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -259,7 +259,7 @@ export class ContactsServiceProxy {
      * @return Success
      */
     search(body: ContactsSearchCriteriaModel | undefined): Observable<ContactDtoSearchResults> {
-        let url_ = this.baseUrl + "/api/Contacts/Search";
+        let url_ = this.baseUrl + "/api/Contacts/search";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);

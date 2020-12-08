@@ -18,11 +18,9 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
     [TestFixture]
     public class GetContactTests : BaseContactsTests
     {
-        private const string Url = ContactsApiUrl + "/Get";
-
         private void VerifyCall(string url, System.Net.HttpStatusCode expectedCode)
         {
-            var response = _client.GetAsync(Url + url).Result;
+            var response = _client.GetAsync(ContactsApiUrl + url).Result;
 
             Assert.IsTrue(response.StatusCode == expectedCode);
         }
@@ -52,9 +50,9 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
         }
 
         [Test]
-        public void NullIdReturnsNotfound()
+        public void NullIdReturnsNotAllowed()
         {
-            VerifyCall(string.Empty, System.Net.HttpStatusCode.NotFound);
+            VerifyCall(string.Empty, System.Net.HttpStatusCode.MethodNotAllowed);
         }
     }
 }

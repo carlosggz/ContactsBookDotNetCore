@@ -13,14 +13,12 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
     [TestFixture]
     public class SearchContactTests : BaseContactsTests
     {
-        private const string Url = ContactsApiUrl + "/Search";
-
         private void VerifyCall(ContactsSearchCriteriaModel criteria, System.Net.HttpStatusCode expectedCode)
         {
             var json = criteria == null ? string.Empty : JsonConvert.SerializeObject(criteria);
             using var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-            var response = _client.PostAsync(Url, content).Result;
+            var response = _client.PostAsync(ContactsApiUrl + "/search", content).Result;
 
             Assert.IsTrue(response.StatusCode == expectedCode);
         }

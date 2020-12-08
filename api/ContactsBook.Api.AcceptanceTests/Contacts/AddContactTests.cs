@@ -10,14 +10,12 @@ namespace ContactsBook.Api.AcceptanceTests.Contacts
     [TestFixture]
     public class AddContactTests : BaseContactsTests
     {
-        private const string Url = ContactsApiUrl + "/Add";
-
         private void VerifyCall(ContactsModel model, System.Net.HttpStatusCode expectedCode)
         {
             var json = model == null ? string.Empty : JsonConvert.SerializeObject(model);
             using var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-            var response = _client.PostAsync(Url, content).Result;
+            var response = _client.PostAsync(ContactsApiUrl, content).Result;
 
             Assert.IsTrue(response.StatusCode == expectedCode);
         }
